@@ -5,12 +5,12 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name + "-" + project.minecraft_version
 version = project.mod_version
 group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name + "-" + project.minecraft_version
+}
 
 repositories {
     maven { url "https://maven.shedaniel.me/" }
@@ -22,7 +22,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
 
-    modApi "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_2_version}", {
+    modApi "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}", {
         exclude group: "net.fabricmc.fabric-api"
     }
 
@@ -36,25 +36,41 @@ dependencies {
 }
 
 processResources {
-    filesMatching("fabric.mod.json") {
-        expand(
-                "version": project.version,
-                "minecraft_version": minecraft_version,
-                "cloth_config_2_version": cloth_config_2_version,
-                "loader_version": loader_version,
-                "fabric_language_kotlin": fabric_kotlin_version
-        )
+    // expand all properties from gradle.properties
+    def stringProperties = providers.gradlePropertiesPrefixedBy('').get()
+    stringProperties += ['version': project.version]
+
+    stringProperties.each { inputs.property(it.key, it.value) }
+
+    ['fabric.mod.json', 'bebooks.mixins.json'].each {
+        filesMatching(it) {
+            expand(stringProperties) {
+                escapeBackslash = true
+            }
+        }
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
+    it.options.compilerArgs.add('-Xlint:deprecation')
+    it.options.release = project.java_version as Integer
 }
 
 java {
+    targetCompatibility = sourceCompatibility = project.java_version as Integer
     withSourcesJar()
 }
 
 jar {
-    from "LICENSE"
+    from("LICENSE") {
+        rename { "${it}_${project.base.archivesName.get()}"}
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }

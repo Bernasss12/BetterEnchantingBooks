@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "dev.bernasss12.bebooks.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_${java_version}",
   "client": [
     "DrawContextMixin",
     "EnchantedBookItemMixin",
