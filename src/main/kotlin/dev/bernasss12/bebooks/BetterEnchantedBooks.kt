@@ -19,8 +19,11 @@ object BetterEnchantedBooks {
 
     val LOGGER: Logger = LogManager.getLogger("BEBooks")
 
+    /**
+     * This method gets called once after every mod's entry points. By this point all enchantments should be registered.
+     */
     @JvmStatic
-    fun onTitleScreenLoaded() {
+    fun lateInit() {
         ModConfig.load()
         EnchantmentDataManager.load()
     }

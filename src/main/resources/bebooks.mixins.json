@@ -10,7 +10,7 @@
     "HandledScreenMixin",
     "ItemStackMixin",
     "OrderedTextTooltipComponentAccessor",
-    "TitleScreenMixin"
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
