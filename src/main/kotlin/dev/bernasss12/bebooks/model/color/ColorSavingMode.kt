@@ -3,6 +3,7 @@ package dev.bernasss12.bebooks.model.color
 import dev.bernasss12.bebooks.util.Util.decodeRGB
 import dev.bernasss12.bebooks.util.Util.encodeRGB
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable
+import java.awt.Color
 
 enum class ColorSavingMode(
     val serialize: (value: Color) -> String,

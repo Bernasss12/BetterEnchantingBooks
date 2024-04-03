@@ -1,6 +1,5 @@
 package dev.bernasss12.bebooks.util
 
-import dev.bernasss12.bebooks.model.color.Color
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 
@@ -23,6 +22,4 @@ object Util {
 
         return (r shl 16) + (g shl 8) + b
     }
-
-    fun Int.toColor() = Color(this)
 }

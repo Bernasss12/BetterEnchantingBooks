@@ -1,10 +1,13 @@
 package dev.bernasss12.bebooks.model.enchantment
 
+import dev.bernasss12.bebooks.config.ModConfig
 import dev.bernasss12.bebooks.manage.EnchantmentDataManager
-import dev.bernasss12.bebooks.model.color.Color
+import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import dev.bernasss12.bebooks.util.NBTUtil.getEnchantmentID
+import dev.bernasss12.bebooks.util.Util.isInt
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -15,12 +18,14 @@ import net.minecraft.enchantment.Enchantment
 import net.minecraft.nbt.NbtElement
 import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
+import java.awt.Color
 
 @Serializable
 data class EnchantmentData(
     @Serializable(with = IdentifierSerializer::class)
     val identifier: Identifier,
     var priority: Int = -1,
+    @Serializable(with = ColorSerializer::class)
     var color: Color = EnchantmentDataManager.getDefaultColorForId(identifier)
 ) {
     val enchantment: Enchantment? by lazy {
@@ -59,5 +64,25 @@ data class EnchantmentData(
         override fun serialize(encoder: Encoder, value: Identifier) {
             encoder.encodeString(value.toString())
         }
+    }
+
+    object ColorSerializer : KSerializer<Color> {
+        override val descriptor = PrimitiveSerialDescriptor("Color", PrimitiveKind.STRING)
+        override fun deserialize(decoder: Decoder): Color {
+            val value = decoder.decodeString()
+            return when {
+                value.startsWith("rgb") -> ColorSavingMode.RGB_VALUES.deserialize(value)
+                value.startsWith("#") -> ColorSavingMode.HEXADECIMAL.deserialize(value)
+                value.isInt() -> ColorSavingMode.INTEGER.deserialize(value)
+                else -> throw SerializationException("[$value] is not a valid color string.")
+            }
+        }
+
+        override fun serialize(encoder: Encoder, value: Color) {
+            encoder.encodeString(
+                ModConfig.colorSavingMode.serialize(value)
+            )
+        }
+
     }
 }

@@ -3,7 +3,6 @@ package dev.bernasss12.bebooks.config
 import dev.bernasss12.bebooks.BetterEnchantedBooks.LOGGER
 import dev.bernasss12.bebooks.manage.BookColorManager
 import dev.bernasss12.bebooks.manage.EnchantmentDataManager
-import dev.bernasss12.bebooks.model.color.Color
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import dev.bernasss12.bebooks.util.ModConstants.CONFIG_DIR
 import dev.bernasss12.bebooks.util.ModConstants.DEFAULT_COLOR_BOOKS
@@ -21,6 +20,7 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.registry.Registries
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import java.awt.Color
 import java.io.File
 import java.io.IOException
 import java.util.*

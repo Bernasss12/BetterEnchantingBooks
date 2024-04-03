@@ -2,20 +2,19 @@ package dev.bernasss12.bebooks.util
 
 import dev.bernasss12.bebooks.config.SortingMode
 import dev.bernasss12.bebooks.config.TooltipMode
-import dev.bernasss12.bebooks.model.color.Color
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.Enchantments.*
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items.*
+import java.awt.Color
 import java.nio.file.Path
 
 object ModConstants {
     const val SETTINGS_VERSION: Int = 2
     val CONFIG_DIR: Path = FabricLoader.getInstance().configDir.resolve("bebooks")
 
-    @JvmField // TODO remove when not used by java class
     val DEFAULT_CHECKED_ITEMS_LIST: List<ItemStack> = listOf(
         DIAMOND_SWORD,
         DIAMOND_PICKAXE,

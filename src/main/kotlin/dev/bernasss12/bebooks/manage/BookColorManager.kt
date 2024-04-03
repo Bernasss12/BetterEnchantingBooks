@@ -1,12 +1,12 @@
 package dev.bernasss12.bebooks.manage
 
 import dev.bernasss12.bebooks.config.ModConfig
-import dev.bernasss12.bebooks.model.color.Color
 import dev.bernasss12.bebooks.util.ModConstants.DEFAULT_BOOK_STRIP_COLOR
 import dev.bernasss12.bebooks.util.NBTUtil.getPriorityEnchantmentData
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.item.EnchantedBookItem
 import net.minecraft.item.ItemStack
+import java.awt.Color
 
 object BookColorManager {
     private val cache = hashMapOf<ItemStack, Color>()
