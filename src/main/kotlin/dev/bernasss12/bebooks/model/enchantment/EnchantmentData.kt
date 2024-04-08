@@ -2,7 +2,6 @@ package dev.bernasss12.bebooks.model.enchantment
 
 import dev.bernasss12.bebooks.config.DefaultConfigs
 import dev.bernasss12.bebooks.config.ModConfig
-import dev.bernasss12.bebooks.manage.SavedConfigsManager
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import dev.bernasss12.bebooks.util.NBTUtil.getEnchantmentID
 import dev.bernasss12.bebooks.util.Util.isInt
@@ -50,7 +49,7 @@ data class EnchantmentData(
         fun fromNBT(element: NbtElement): EnchantmentData {
             val id: String = element.getEnchantmentID()
             val identifier: Identifier = Identifier.tryParse(id) ?: error("Can't parse id")
-            return SavedConfigsManager.getData(identifier)
+            return ModConfig.getEnchantmentData(identifier)
         }
     }
 

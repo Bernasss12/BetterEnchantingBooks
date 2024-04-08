@@ -11,8 +11,10 @@ import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_KEEP_CURSES_BELOW
 import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL
 import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_SORTING_MODE
 import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_TOOLTIP_MODE
+import dev.bernasss12.bebooks.manage.SavedConfigsManager
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import net.minecraft.client.gui.screen.Screen
+import net.minecraft.util.Identifier
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -23,6 +25,8 @@ object ModConfig {
     private val properties: Properties = object : Properties() {
         override val values: MutableCollection<Any> = linkedSetOf()
     }
+
+    private val complexConfigsManager = SavedConfigsManager()
 
     // Sorting settings
     var sortingMode: SortingMode
@@ -65,20 +69,24 @@ object ModConfig {
         }
     }
 
-    fun load() {
+    fun loadProperties() {
         if (file.exists()) {
             try {
                 file.inputStream().use { stream ->
                     properties.load(stream)
                 }
-                save()
+                saveProperties()
             } catch (e: IOException) {
                 LOGGER.warn("Could not read ${file.name} properties file. Using defaults.")
             }
         }
     }
 
-    fun save() {
+    fun loadConfigs() {
+        complexConfigsManager.load()
+    }
+
+    fun saveProperties() {
         try {
             CONFIG_DIR.createDirectories()
             properties.apply {
@@ -96,6 +104,20 @@ object ModConfig {
             LOGGER.error("Couldn't create config directory.\nChanged settings could be lost!", e)
         }
     }
+
+    fun saveConfigs() {
+        complexConfigsManager.save()
+    }
+
+    /*
+        Saved configs wrapper.
+     */
+
+    fun getEnchantmentData(value: Identifier) = complexConfigsManager.getData(value)
+
+    /*
+
+     */
 
     private fun <T : Any> Properties.getPropertyOrDefault(key: String, default: T, convert: (String) -> T): T {
         return convert.invoke(

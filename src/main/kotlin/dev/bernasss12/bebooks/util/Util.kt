@@ -14,6 +14,8 @@ object Util {
         return "rgb($r,$g,$b)"
     }
 
+    fun Int.noAlpha() = this and 0xffffff
+
     fun String.decodeRGB(): Int {
         val values = this.removePrefix("rgb(").removeSuffix(")").split(",")
         val r = values[0].trim().toInt()
