@@ -18,8 +18,7 @@ object DefaultConfigs {
     val CONFIG_DIR: Path = FabricLoader.getInstance().configDir.resolve(NAMESPACE)
 
     // Enchantment colors and sorting priorities
-    var ENCHANTMENTS: Map<Identifier, EnchantmentData> = mapOf()
-        private set
+    private var ENCHANTMENTS: Map<Identifier, EnchantmentData> = mapOf()
     // Icons to check and/or draw on the tooltip
     var ICONS: Set<ItemStack> = setOf()
         private set
@@ -45,6 +44,16 @@ object DefaultConfigs {
     val DEFAULT_BOOK_STRIP_COLOR: Color = Color(0xc5133a)
 
     /**
+     * Returns the default color for a given identifier.
+     *
+     * @param identifier the identifier used to retrieve the default color
+     * @return the default color for the given identifier, or the default book strip color if no color is found
+     */
+    fun getDefaultColor(identifier: Identifier): Color {
+        return ENCHANTMENTS[identifier]?.color ?: DEFAULT_BOOK_STRIP_COLOR
+    }
+
+    /**
      * Loads the default mod configuration.
      * This can technically be overwritten by a resource pack, for example, in a mod pack.
      * Located at bebooks:default.json
@@ -65,7 +74,7 @@ object DefaultConfigs {
                 try {
                     LOGGER.info("Reading default enchantment configs.")
                     val jsonString = default.reader.readText()
-                    val data = SavedData.readFromJson(jsonString)
+                    val data = SavedConfigs.readFromJson(jsonString)
                     data.enchantments.forEach { current ->
                         enchantments[current.identifier] = current
                     }
@@ -101,7 +110,7 @@ object DefaultConfigs {
                 try {
                     LOGGER.info("Found configs from: ${it.value.pack.name}. Loading.")
                     val jsonString: String = it.value.reader.readText()
-                    val data: SavedData = SavedData.readFromJson(jsonString)
+                    val data: SavedConfigs = SavedConfigs.readFromJson(jsonString)
                     data.enchantments.forEach { current: EnchantmentData ->
                         enchantments[current.identifier] = current
                     }

@@ -3,7 +3,7 @@ package dev.bernasss12.bebooks
 import dev.bernasss12.bebooks.config.DefaultConfigs
 import dev.bernasss12.bebooks.config.ModConfig
 import dev.bernasss12.bebooks.manage.BookColorManager.itemColorProvider
-import dev.bernasss12.bebooks.manage.EnchantmentDataManager
+import dev.bernasss12.bebooks.manage.SavedConfigsManager
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
@@ -30,6 +30,6 @@ object BetterEnchantedBooks {
     fun lateInit() {
         DefaultConfigs.loadDefaultConfigurations()
         ModConfig.load()
-        EnchantmentDataManager.load()
+        SavedConfigsManager.load()
     }
 }

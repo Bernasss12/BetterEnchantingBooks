@@ -1,7 +1,8 @@
 package dev.bernasss12.bebooks.model.enchantment
 
+import dev.bernasss12.bebooks.config.DefaultConfigs
 import dev.bernasss12.bebooks.config.ModConfig
-import dev.bernasss12.bebooks.manage.EnchantmentDataManager
+import dev.bernasss12.bebooks.manage.SavedConfigsManager
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import dev.bernasss12.bebooks.util.NBTUtil.getEnchantmentID
 import dev.bernasss12.bebooks.util.Util.isInt
@@ -26,7 +27,7 @@ data class EnchantmentData(
     val identifier: Identifier,
     var priority: Int = -1,
     @Serializable(with = ColorSerializer::class)
-    var color: Color = EnchantmentDataManager.getDefaultColorForId(identifier)
+    var color: Color = DefaultConfigs.getDefaultColor(identifier)
 ) {
     val enchantment: Enchantment? by lazy {
         Registries.ENCHANTMENT[identifier]
@@ -49,7 +50,7 @@ data class EnchantmentData(
         fun fromNBT(element: NbtElement): EnchantmentData {
             val id: String = element.getEnchantmentID()
             val identifier: Identifier = Identifier.tryParse(id) ?: error("Can't parse id")
-            return EnchantmentDataManager.getData(identifier)
+            return SavedConfigsManager.getData(identifier)
         }
     }
 

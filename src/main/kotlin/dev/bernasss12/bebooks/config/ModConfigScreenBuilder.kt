@@ -19,7 +19,7 @@ import dev.bernasss12.bebooks.config.ModConfig.showMaxEnchantmentLevel
 import dev.bernasss12.bebooks.config.ModConfig.sortingMode
 import dev.bernasss12.bebooks.config.ModConfig.tooltipMode
 import dev.bernasss12.bebooks.manage.BookColorManager
-import dev.bernasss12.bebooks.manage.EnchantmentDataManager
+import dev.bernasss12.bebooks.manage.SavedConfigsManager
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry
 import me.shedaniel.clothconfig2.api.ConfigBuilder
@@ -92,12 +92,12 @@ object ModConfigScreenBuilder {
             )
 
             val entries = ArrayList<AbstractConfigListEntry<*>>()
-            val enchantments = Registries.ENCHANTMENT.keys.map { EnchantmentDataManager.getData(it.value) }
+            val enchantments = Registries.ENCHANTMENT.keys.map { SavedConfigsManager.getData(it.value) }
             for (enchantment in enchantments) {
                 if (enchantment.enchantment == null) continue  // not registered
                 entries.add(
                     entryBuilder.startColorField(Text.literal(enchantment.translated), enchantment.color.rgb).apply {
-                        setDefaultValue(EnchantmentDataManager.getDefaultColorForId(enchantment.identifier).rgb)
+                        setDefaultValue(DefaultConfigs.getDefaultColor(enchantment.identifier).rgb)
                         setSaveConsumer { enchantment.color = Color(it) }
                     }.build()
                 )
@@ -145,7 +145,7 @@ object ModConfigScreenBuilder {
 
         setSavingRunnable {
             ModConfig.save()
-            EnchantmentDataManager.save()
+            SavedConfigsManager.save()
             BookColorManager.clear()
         }
 
