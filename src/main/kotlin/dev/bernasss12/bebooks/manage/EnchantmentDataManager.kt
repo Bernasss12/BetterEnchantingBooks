@@ -1,14 +1,12 @@
 package dev.bernasss12.bebooks.manage
 
 import dev.bernasss12.bebooks.BetterEnchantedBooks.LOGGER
+import dev.bernasss12.bebooks.config.DefaultConfigs
+import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_BOOK_STRIP_COLOR
+import dev.bernasss12.bebooks.config.SavedData
 import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
-import dev.bernasss12.bebooks.util.ModConstants
-import dev.bernasss12.bebooks.util.ModConstants.DEFAULT_BOOK_STRIP_COLOR
-import dev.bernasss12.bebooks.util.ModConstants.DEFAULT_ENCHANTMENT_COLORS
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
 import java.awt.Color
 import java.io.File
@@ -25,12 +23,8 @@ import java.io.IOException
 object EnchantmentDataManager {
 
     private const val FILE_VERSION = 2
-    private val file: File = ModConstants.CONFIG_DIR.resolve("enchantment_data.json").toFile()
+    private val file: File = DefaultConfigs.CONFIG_DIR.resolve("enchantment_data.json").toFile()
     private val cache = hashMapOf<Identifier, EnchantmentData>()
-
-    private val json = Json {
-        prettyPrint = true
-    }
 
     fun getData(key: Identifier): EnchantmentData {
         return cache.getOrPut(key) {
@@ -50,8 +44,7 @@ object EnchantmentDataManager {
     }
 
     fun getDefaultColorForId(identifier: Identifier): Color {
-        val enchantment = Registries.ENCHANTMENT.get(identifier) ?: return DEFAULT_BOOK_STRIP_COLOR
-        return DEFAULT_ENCHANTMENT_COLORS[enchantment] ?: DEFAULT_BOOK_STRIP_COLOR
+        return DefaultConfigs.ENCHANTMENTS[identifier]?.color ?: DEFAULT_BOOK_STRIP_COLOR
     }
 
     fun save() {
@@ -59,9 +52,7 @@ object EnchantmentDataManager {
         val filteredValues = cache.values.filter {
             it.priority != -1 || it.color != getDefaultColorForId(it.identifier)
         }
-        val savedData = SavedData(FILE_VERSION, filteredValues)
-        val jsonString = json.encodeToString(SavedData.serializer(), savedData)
-        file.writeText(jsonString)
+        SavedData(FILE_VERSION, filteredValues).writeToFile(file)
     }
 
     fun load() {
@@ -69,7 +60,7 @@ object EnchantmentDataManager {
             val jsonString = file.readText()
             try {
                 // Try reading the data as the new format:
-                val data: SavedData = json.decodeFromString(jsonString)
+                val data: SavedData = SavedData.readFromJson(jsonString)
                 cache.clear()
                 data.enchantments.forEach { enchantmentData ->
                     cache[enchantmentData.identifier] = enchantmentData
@@ -77,7 +68,7 @@ object EnchantmentDataManager {
             } catch (e: SerializationException) {
                 LOGGER.warn("Failed to parse ${file.name}, going to try legacy parsing. This file will be overwritten when saved.")
                 try {
-                    val old: Map<String, Map<String, Int>> = json.decodeFromString(jsonString)
+                    val old: Map<String, Map<String, Int>> = Json.decodeFromString(jsonString)
                     old.forEach { (key, value) ->
                         val identifier = Identifier.tryParse(key) ?: return@forEach
                         cache.clear()
@@ -97,7 +88,4 @@ object EnchantmentDataManager {
         }
         save()
     }
-
-    @Serializable
-    data class SavedData(val version: Int, val enchantments: List<EnchantmentData>)
 }

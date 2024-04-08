@@ -1,0 +1,216 @@
+{
+    "version": 3,
+    "enchantments": [
+        {
+            "identifier": "minecraft:channeling",
+            "priority": -1,
+            "color": "#AEF5FF"
+        },
+        {
+            "identifier": "minecraft:sharpness",
+            "priority": -1,
+            "color": "#C5133A"
+        },
+        {
+            "identifier": "minecraft:sweeping",
+            "priority": -1,
+            "color": "#FFB301"
+        },
+        {
+            "identifier": "minecraft:impaling",
+            "priority": -1,
+            "color": "#C5133A"
+        },
+        {
+            "identifier": "minecraft:depth_strider",
+            "priority": -1,
+            "color": "#9CDBFF"
+        },
+        {
+            "identifier": "minecraft:fire_protection",
+            "priority": -1,
+            "color": "#C4AAA5"
+        },
+        {
+            "identifier": "minecraft:fortune",
+            "priority": -1,
+            "color": "#FFB65B"
+        },
+        {
+            "identifier": "minecraft:infinity",
+            "priority": -1,
+            "color": "#7B5BE7"
+        },
+        {
+            "identifier": "minecraft:vanishing_curse",
+            "priority": -1,
+            "color": "#171220"
+        },
+        {
+            "identifier": "minecraft:power",
+            "priority": -1,
+            "color": "#C5133A"
+        },
+        {
+            "identifier": "minecraft:protection",
+            "priority": -1,
+            "color": "#A5AFC4"
+        },
+        {
+            "identifier": "minecraft:frost_walker",
+            "priority": -1,
+            "color": "#90B4FF"
+        },
+        {
+            "identifier": "minecraft:loyalty",
+            "priority": -1,
+            "color": "#6EC4B1"
+        },
+        {
+            "identifier": "minecraft:mending",
+            "priority": -1,
+            "color": "#CAFF61"
+        },
+        {
+            "identifier": "minecraft:respiration",
+            "priority": -1,
+            "color": "#7AD5FF"
+        },
+        {
+            "identifier": "minecraft:punch",
+            "priority": -1,
+            "color": "#605B60"
+        },
+        {
+            "identifier": "minecraft:bane_of_arthropods",
+            "priority": -1,
+            "color": "#0F5160"
+        },
+        {
+            "identifier": "minecraft:riptide",
+            "priority": -1,
+            "color": "#ACCFF1"
+        },
+        {
+            "identifier": "minecraft:blast_protection",
+            "priority": -1,
+            "color": "#442E62"
+        },
+        {
+            "identifier": "minecraft:unbreaking",
+            "priority": -1,
+            "color": "#5C3350"
+        },
+        {
+            "identifier": "minecraft:quick_charge",
+            "priority": -1,
+            "color": "#FF0000"
+        },
+        {
+            "identifier": "minecraft:luck_of_the_sea",
+            "priority": -1,
+            "color": "#4BE850"
+        },
+        {
+            "identifier": "minecraft:smite",
+            "priority": -1,
+            "color": "#BF5F2E"
+        },
+        {
+            "identifier": "minecraft:feather_falling",
+            "priority": -1,
+            "color": "#FFF0D1"
+        },
+        {
+            "identifier": "minecraft:fire_aspect",
+            "priority": -1,
+            "color": "#FF7516"
+        },
+        {
+            "identifier": "minecraft:looting",
+            "priority": -1,
+            "color": "#FFB65B"
+        },
+        {
+            "identifier": "minecraft:projectile_protection",
+            "priority": -1,
+            "color": "#CCCDD5"
+        },
+        {
+            "identifier": "minecraft:piercing",
+            "priority": -1,
+            "color": "#337B50"
+        },
+        {
+            "identifier": "minecraft:silk_touch",
+            "priority": -1,
+            "color": "#FFFFFF"
+        },
+        {
+            "identifier": "minecraft:binding_curse",
+            "priority": -1,
+            "color": "#274D1E"
+        },
+        {
+            "identifier": "minecraft:multishot",
+            "priority": -1,
+            "color": "#FFB301"
+        },
+        {
+            "identifier": "minecraft:thorns",
+            "priority": -1,
+            "color": "#560D0B"
+        },
+        {
+            "identifier": "minecraft:lure",
+            "priority": -1,
+            "color": "#FF0000"
+        },
+        {
+            "identifier": "minecraft:knockback",
+            "priority": -1,
+            "color": "#605B60"
+        },
+        {
+            "identifier": "minecraft:aqua_affinity",
+            "priority": -1,
+            "color": "#6E7AF7"
+        },
+        {
+            "identifier": "minecraft:efficiency",
+            "priority": -1,
+            "color": "#FFF164"
+        },
+        {
+            "identifier": "minecraft:flame",
+            "priority": -1,
+            "color": "#FF7516"
+        },
+        {
+            "identifier": "minecraft:soul_speed",
+            "priority": -1,
+            "color": "#41342C"
+        }
+    ],
+    "icons": [
+        "minecraft:diamond_sword",
+        "minecraft:diamond_pickaxe",
+        "minecraft:diamond_axe",
+        "minecraft:diamond_shovel",
+        "minecraft:diamond_hoe",
+        "minecraft:bow",
+        "minecraft:crossbow",
+        "minecraft:fishing_rod",
+        "minecraft:trident",
+        "minecraft:diamond_helmet",
+        "minecraft:diamond_chestplate",
+        "minecraft:diamond_leggings",
+        "minecraft:diamond_boots",
+        "minecraft:elytra",
+        "minecraft:shield",
+        "minecraft:shears",
+        "minecraft:carrot_on_a_stick",
+        "minecraft:warped_fungus_on_a_stick",
+        "minecraft:flint_and_steel"
+    ]
+}
