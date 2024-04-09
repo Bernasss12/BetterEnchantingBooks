@@ -7,6 +7,7 @@ import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
+import net.minecraft.registry.Registries
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import java.awt.Color
@@ -81,6 +82,19 @@ object DefaultConfigs {
                     data.icons.forEach { current ->
                         icons += current
                     }
+
+                    // Check if any registered enchantment doesn't have a default value.
+                    Registries.ENCHANTMENT.keys.map { key ->
+                        key.value
+                    }.filterNot { key ->
+                        enchantments.contains(key)
+                    }.let { notDefaulted ->
+                        if (notDefaulted.isNotEmpty()) {
+                            LOGGER.warn("The following enchantments do not have default settings [${notDefaulted.count()}]:")
+                            LOGGER.warn(notDefaulted.joinToString(separator = ", ", prefix = "[", postfix = "]") { it.toString() })
+                        }
+                    }
+
                     LOGGER.info("Successfully read default configs.")
                 } catch (e: IOException) {
                     LOGGER.error("Was not able to read own default enchantment configs. Default original color will be used.")
