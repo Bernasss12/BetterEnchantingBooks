@@ -30,9 +30,9 @@ class SavedConfigsManager {
     }
 
     fun getData(enchantment: Enchantment): EnchantmentData? {
-        return Registries.ENCHANTMENT.getId(enchantment)?.let {
+        return Registries.ENCHANTMENT.getId(enchantment)?.let { identifier ->
             getData(
-                it
+                identifier
             )
         }
     }

@@ -7,8 +7,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.item.ItemStack;
 
-import dev.bernasss12.bebooks.manage.ApplicableItemsManager;
 import dev.bernasss12.bebooks.manage.ItemStackManager;
+import dev.bernasss12.bebooks.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Mixin;
@@ -43,6 +43,6 @@ public abstract class DrawContextMixin {
         argsOnly = true
     )
     private List<TooltipComponent> convertTooltipComponents(List<TooltipComponent> components) {
-        return ApplicableItemsManager.convertTooltipComponents(components);
+        return Util.convertTooltipComponents(components);
     }
 }

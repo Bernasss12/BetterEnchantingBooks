@@ -11,9 +11,9 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 
 import dev.bernasss12.bebooks.config.ModConfig;
-import dev.bernasss12.bebooks.manage.ApplicableItemsManager;
 import dev.bernasss12.bebooks.manage.MaxEnchantmentManager;
 import dev.bernasss12.bebooks.util.NBTUtil;
+import dev.bernasss12.bebooks.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import org.spongepowered.asm.mixin.Dynamic;
@@ -58,6 +58,6 @@ public abstract class ItemStackMixin {
             remap = false
     )
     private static void addTooltipIcons(List<Text> tooltip, NbtCompound tag, Enchantment enchantment, CallbackInfo info) {
-        ApplicableItemsManager.addTooltipIcons(tooltip, enchantment);
+        Util.addTooltipIcons(tooltip, enchantment);
     }
 }
