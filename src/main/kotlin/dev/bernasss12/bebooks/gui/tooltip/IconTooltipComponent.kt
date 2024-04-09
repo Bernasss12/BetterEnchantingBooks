@@ -6,7 +6,7 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.tooltip.TooltipComponent
 import net.minecraft.item.ItemStack
 
-data class IconTooltipComponent(val icons: List<ItemStack>) : TooltipComponent {
+data class IconTooltipComponent(val icons: Set<ItemStack>) : TooltipComponent {
     override fun getHeight(): Int = MinecraftClient.getInstance().textRenderer.fontHeight + 1
 
     override fun getWidth(textRenderer: TextRenderer?): Int = icons.size * 8
@@ -19,8 +19,8 @@ data class IconTooltipComponent(val icons: List<ItemStack>) : TooltipComponent {
         val matrices = context.matrices
         matrices.push()
         matrices.scale(0.5f, 0.5f, 1.0f)
-        for (i in icons.indices) {
-            context.drawItem(icons[i], scaledX + scaledOffset * i, scaledY)
+        icons.forEachIndexed { index, icon ->
+            context.drawItem(icon, scaledX + scaledOffset * index, scaledY)
         }
         matrices.pop()
     }

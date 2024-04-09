@@ -14,6 +14,8 @@ import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_TOOLTIP_MODE
 import dev.bernasss12.bebooks.manage.SavedConfigsManager
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import net.minecraft.client.gui.screen.Screen
+import net.minecraft.enchantment.Enchantment
+import net.minecraft.item.ItemStack
 import net.minecraft.util.Identifier
 import java.io.File
 import java.io.IOException
@@ -27,6 +29,9 @@ object ModConfig {
     }
 
     private val complexConfigsManager = SavedConfigsManager()
+
+    val applicableItemIcons: Set<ItemStack>
+        get() = complexConfigsManager.applicableItemIcons.toSet()
 
     // Sorting settings
     var sortingMode: SortingMode
@@ -115,8 +120,11 @@ object ModConfig {
 
     fun getEnchantmentData(value: Identifier) = complexConfigsManager.getData(value)
 
-    /*
+    fun getApplicableItemIcons(enchantment: Enchantment): Set<ItemStack> =
+        complexConfigsManager.getData(enchantment)?.applicableItemIcons ?: emptySet()
 
+    /*
+        Useful property methods.
      */
 
     private fun <T : Any> Properties.getPropertyOrDefault(key: String, default: T, convert: (String) -> T): T {

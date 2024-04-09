@@ -6,8 +6,10 @@ import dev.bernasss12.bebooks.config.SavedConfigs
 import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import net.minecraft.enchantment.Enchantment
 import net.minecraft.item.ItemStack
 import net.minecraft.item.ItemStack.areItemsEqual
+import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
 import java.awt.Color
 import java.io.File
@@ -17,7 +19,7 @@ class SavedConfigsManager {
 
     private val file: File = DefaultConfigs.CONFIG_DIR.resolve("enchantment_data.json").toFile()
     private val enchantmentConfigurations = hashMapOf<Identifier, EnchantmentData>()
-    private val applicableItems = mutableSetOf<ItemStack>()
+    val applicableItemIcons = mutableSetOf<ItemStack>()
 
     fun getData(key: Identifier): EnchantmentData {
         return enchantmentConfigurations.getOrPut(key) {
@@ -27,12 +29,11 @@ class SavedConfigsManager {
         }
     }
 
-    fun getData(key: String): EnchantmentData {
-        val identifier = Identifier.tryParse(key)
-        return if (identifier != null) {
-            getData(identifier)
-        } else {
-            throw IllegalArgumentException("Invalid identifier: $key")
+    fun getData(enchantment: Enchantment): EnchantmentData? {
+        return Registries.ENCHANTMENT.getId(enchantment)?.let {
+            getData(
+                it
+            )
         }
     }
 
@@ -44,11 +45,11 @@ class SavedConfigsManager {
 
         // Compare the current set with the default set and if there are no differences don't bother saving it.
         val applicableItemsDifference = if (
-            applicableItems.count() != DefaultConfigs.ICONS.count() ||
-            applicableItems.zip(DefaultConfigs.ICONS).any { (current, default) ->
+            applicableItemIcons.count() != DefaultConfigs.ICONS.count() ||
+            applicableItemIcons.zip(DefaultConfigs.ICONS).any { (current, default) ->
                 areItemsEqual(current, default)
             }
-        ) applicableItems else emptySet()
+        ) applicableItemIcons else emptySet()
 
         SavedConfigs(
             enchantments = nonDefaultEnchantmentData,
@@ -69,9 +70,9 @@ class SavedConfigsManager {
                 }
                 if (data.version >= 3) {
                     if (data.icons.isEmpty()) {
-                        applicableItems.addAll(DefaultConfigs.ICONS)
+                        applicableItemIcons.addAll(DefaultConfigs.ICONS)
                     } else {
-                        applicableItems.addAll(data.icons)
+                        applicableItemIcons.addAll(data.icons)
                     }
                 }
             } catch (e: SerializationException) {
@@ -100,6 +101,6 @@ class SavedConfigsManager {
 
     private fun clear() {
         enchantmentConfigurations.clear()
-        applicableItems.clear()
+        applicableItemIcons.clear()
     }
 }

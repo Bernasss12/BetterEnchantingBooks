@@ -15,6 +15,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.minecraft.client.resource.language.I18n
 import net.minecraft.enchantment.Enchantment
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtElement
 import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
@@ -30,6 +31,12 @@ data class EnchantmentData(
 ) {
     val enchantment: Enchantment? by lazy {
         Registries.ENCHANTMENT[identifier]
+    }
+
+    val applicableItemIcons: Set<ItemStack> by lazy {
+        ModConfig.applicableItemIcons.filter { currentItem ->
+            enchantment?.isAcceptableItem(currentItem) ?: false
+        }.toSet()
     }
 
     val translated: String by lazy {

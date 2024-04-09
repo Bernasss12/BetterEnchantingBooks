@@ -3,7 +3,7 @@ package dev.bernasss12.bebooks.util.text
 import net.minecraft.item.ItemStack
 import net.minecraft.text.*
 
-data class IconTooltipDataText(val icons: List<ItemStack>) : OrderedText, Text {
+data class IconTooltipDataText(val icons: Set<ItemStack>) : OrderedText, Text {
 
     override fun accept(visitor: CharacterVisitor?): Boolean = false
 
