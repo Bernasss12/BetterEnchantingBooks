@@ -7,7 +7,7 @@ import net.minecraft.nbt.NbtElement
 import net.minecraft.nbt.NbtList
 
 object NBTUtil {
-    @JvmStatic // TODO remove when ItemStackMixin.java is converted to Kotlin
+    @JvmStatic
     fun NbtList.sorted(sortingMode: SortingMode, keepCursesBelow: Boolean): NbtList = sortedList(sortingMode, keepCursesBelow).toNbtList()
 
     private fun NbtList.sortedList(

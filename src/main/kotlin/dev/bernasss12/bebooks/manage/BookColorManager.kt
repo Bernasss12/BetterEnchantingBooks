@@ -16,6 +16,11 @@ object BookColorManager {
         if (!ModConfig.colorBooks || stack == null) return@ItemColorProvider DEFAULT_BOOK_STRIP_COLOR.rgb
         if (tintIndex != 1) return@ItemColorProvider 0xffffffff.toInt()
 
+        // Check if stack has any enchantments e.g. in advancement screen.
+        if (!stack.hasEnchantments()) {
+            return@ItemColorProvider DEFAULT_BOOK_STRIP_COLOR.rgb
+        }
+
         cache.getOrPut(stack) {
             val data = EnchantedBookItem
                 .getEnchantmentNbt(stack)
