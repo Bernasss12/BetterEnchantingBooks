@@ -1,0 +1,59 @@
+name: Publish a commit version to Modrinth, Curseforge and Github.
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to Run On'
+        required: true
+        default: 'mc-1.20-kotlin'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Fetch mod properties
+        uses: BrycensRanch/read-properties-action@v1
+        id: properties
+        with:
+          file: gradle.properties
+          all: true
+
+      - name: Check for Kotlin
+        id: kotlin_check
+        run: |
+          if [[ -n "${{ steps.properties.outputs.kotlin_version }}" ]]; then
+            echo "::set-output name=kotlin::[Kotlin]"
+          else
+            echo "::set-output name=kotlin::"
+          fi
+
+      - name: Build
+        run: ./gradlew clean build
+
+      - name: Publish mod
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: yjpXhps7
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-unfeature-mode: subset
+
+          curseforge-id: 369122
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          name: "[${{ steps.properties.outputs.archives_minecraft_version }}]${{ steps.kotlin_check.outputs.kotlin }} Better Enchanted Books ${{ steps.properties.outputs.mod_version }}"
