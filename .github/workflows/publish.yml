@@ -41,6 +41,9 @@ jobs:
             echo "::set-output name=kotlin::"
           fi
 
+      - name: Build
+        run: ./gradlew clean build
+
       - name: Publish mod
         uses: Kir-Antipov/mc-publish@v3.3
         with:
