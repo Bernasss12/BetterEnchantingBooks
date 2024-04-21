@@ -46,7 +46,7 @@ jobs:
         with:
           modrinth-id: yjpXhps7
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
-          modrinth-unfeature-subset: subset
+          modrinth-unfeature-mode: subset
 
           curseforge-id: 369122
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
