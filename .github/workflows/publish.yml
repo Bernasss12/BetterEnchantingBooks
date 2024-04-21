@@ -53,4 +53,4 @@ jobs:
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-    name: "[${{ steps.properties.outputs.archives_minecraft_version }}]${{ steps.kotlin_check.outputs.kotlin }} Better Enchanted Books ${{ steps.properties.outputs.mod_version }}"
+          name: "[${{ steps.properties.outputs.archives_minecraft_version }}]${{ steps.kotlin_check.outputs.kotlin }} Better Enchanted Books ${{ steps.properties.outputs.mod_version }}"
