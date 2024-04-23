@@ -5,12 +5,11 @@
   "compatibilityLevel": "JAVA_${java_version}",
   "client": [
     "DrawContextMixin",
-    "EnchantedBookItemMixin",
     "EnchantmentMixin",
     "HandledScreenMixin",
     "ItemStackMixin",
-    "OrderedTextTooltipComponentAccessor",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "OrderedTextTooltipComponentAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
