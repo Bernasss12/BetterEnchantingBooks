@@ -39,25 +39,25 @@ public abstract class ItemStackMixin {
         return tag;
     }
 
-    @Dynamic("ItemStack.appendEnchantments' lambda")
-    @Inject(
-            at = @At(value = "HEAD"),
-            method = "method_17869",
-            remap = false
-    )
-    private static void setShowEnchantmentMaxLevel(List<Text> tooltip, NbtCompound tag, Enchantment enchantment, CallbackInfo info) {
-        if (ModConfig.INSTANCE.getShowMaxEnchantmentLevel()) {
-            MaxEnchantmentManager.setShowMaxLevel();
-        }
-    }
-
-    @Dynamic("ItemStack.appendEnchantments' lambda")
-    @Inject(
-            at = @At(value = "TAIL"),
-            method = "method_17869",
-            remap = false
-    )
-    private static void addTooltipIcons(List<Text> tooltip, NbtCompound tag, Enchantment enchantment, CallbackInfo info) {
-        Util.addTooltipIcons(tooltip, enchantment);
-    }
+//    @Dynamic("ItemStack.appendEnchantments' lambda")
+//    @Inject(
+//            at = @At(value = "HEAD"),
+//            method = "method_17869",
+//            remap = false
+//    )
+//    private static void setShowEnchantmentMaxLevel(List<Text> tooltip, NbtCompound tag, Enchantment enchantment, CallbackInfo info) {
+//        if (ModConfig.INSTANCE.getShowMaxEnchantmentLevel()) {
+//            MaxEnchantmentManager.setShowMaxLevel();
+//        }
+//    }
+//
+//    @Dynamic("ItemStack.appendEnchantments' lambda")
+//    @Inject(
+//            at = @At(value = "TAIL"),
+//            method = "method_17869",
+//            remap = false
+//    )
+//    private static void addTooltipIcons(List<Text> tooltip, NbtCompound tag, Enchantment enchantment, CallbackInfo info) {
+//        Util.addTooltipIcons(tooltip, enchantment);
+//    }
 }

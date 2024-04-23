@@ -122,7 +122,7 @@ object DefaultConfigs {
             .takeIf { it.isNotEmpty() }
             ?.forEach {
                 try {
-                    LOGGER.info("Found configs from: ${it.value.pack.name}. Loading.")
+                    LOGGER.info("Found configs from: ${it.value.pack.id}. Loading.")
                     val jsonString: String = it.value.reader.readText()
                     val data: SavedConfigs = SavedConfigs.readFromJson(jsonString)
                     data.enchantments.forEach { current: EnchantmentData ->
@@ -132,7 +132,7 @@ object DefaultConfigs {
                         icons += current
                     }
                 } catch (e: IOException) {
-                    LOGGER.error("Error while trying to load: ${it.value.pack.name}; ${it.key}")
+                    LOGGER.error("Error while trying to load: ${it.value.pack.id}; ${it.key}")
                 }
             } ?: LOGGER.info("No extra configs found.")
     }

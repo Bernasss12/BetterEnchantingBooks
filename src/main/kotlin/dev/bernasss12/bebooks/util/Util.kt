@@ -13,6 +13,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent
 import net.minecraft.client.gui.tooltip.TooltipComponent
 import net.minecraft.enchantment.Enchantment
+import net.minecraft.item.EnchantedBookItem
 import net.minecraft.item.Items
 import net.minecraft.text.Text
 
@@ -25,15 +26,13 @@ object Util {
 
     @JvmStatic
     fun addTooltipIcons(tooltip: MutableList<Text>, enchantment: Enchantment) {
-        if (MinecraftClient.getInstance().currentScreen is HandledScreen<*>) {
-            if (getItemstack().item == Items.ENCHANTED_BOOK) {
-                applyTooltip {
-                    tooltip.add(
-                        IconTooltipDataText(
-                            ModConfig.getApplicableItemIcons(enchantment)
-                        )
+        if (MinecraftClient.getInstance().currentScreen is HandledScreen<*> && getItemstack().item == Items.ENCHANTED_BOOK) {
+            applyTooltip {
+                tooltip.add(
+                    IconTooltipDataText(
+                        ModConfig.getApplicableItemIcons(enchantment)
                     )
-                }
+                )
             }
         }
     }

@@ -23,14 +23,15 @@ object BookColorManager {
         }
 
         cache.getOrPut(stack) {
-            val data = EnchantedBookItem
-                .getEnchantmentNbt(stack)
-                .getPriorityEnchantmentData(
-                    sortingMode = ModConfig.colorMode,
-                    keepCursesBelow = ModConfig.keepCursesBelow,
-                    curseColorOverride = ModConfig.overrideCurseColor
-                )
-            data.color
+            Color.RED
+//            val data = EnchantedBookItem
+//                .getEnchantmentNbt(stack)
+//                .getPriorityEnchantmentData(
+//                    sortingMode = ModConfig.colorMode,
+//                    keepCursesBelow = ModConfig.keepCursesBelow,
+//                    curseColorOverride = ModConfig.overrideCurseColor
+//                )
+//            data.color
         }.rgb.noAlpha()
     }
 

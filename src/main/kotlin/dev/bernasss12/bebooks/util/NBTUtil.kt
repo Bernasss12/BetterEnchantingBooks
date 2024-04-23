@@ -2,7 +2,6 @@ package dev.bernasss12.bebooks.util
 
 import dev.bernasss12.bebooks.config.SortingMode
 import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
-import net.minecraft.item.EnchantedBookItem.STORED_ENCHANTMENTS_KEY
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
@@ -49,7 +48,7 @@ object NBTUtil {
     }
 
     fun ItemStack.hasStoredEnchantments(): Boolean {
-        return this.nbt?.contains(STORED_ENCHANTMENTS_KEY) ?: false
+        return this.hasEnchantments()
     }
 
     private fun List<NbtElement>.toNbtList(): NbtList = NbtList().apply { addAll(this@toNbtList) }
