@@ -1,5 +1,6 @@
 package dev.bernasss12.bebooks.manage
 
+import dev.bernasss12.bebooks.BetterEnchantedBooks
 import dev.bernasss12.bebooks.config.ModConfig
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
@@ -15,7 +16,7 @@ object MaxEnchantmentManager {
         if (
             ModConfig.showMaxEnchantmentLevel &&
             (level != 1 || maxLevel != 1) &&
-            shouldShowEnchantmentMaxLevel.get()
+            BetterEnchantedBooks.isCurrentItemStackEnchantedBookItem
         ) {
             enchantmentName.append("/").append(Text.translatable("enchantment.level.$maxLevel"))
             shouldShowEnchantmentMaxLevel.set(false)

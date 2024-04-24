@@ -1,11 +1,10 @@
 package dev.bernasss12.bebooks.util
 
+import dev.bernasss12.bebooks.BetterEnchantedBooks
 import dev.bernasss12.bebooks.config.ModConfig
 import dev.bernasss12.bebooks.config.ModConfig.applyTooltip
 import dev.bernasss12.bebooks.gui.tooltip.IconTooltipComponent
-import dev.bernasss12.bebooks.manage.ItemStackManager.getItemstack
 import dev.bernasss12.bebooks.mixin.OrderedTextTooltipComponentAccessor
-import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
 import dev.bernasss12.bebooks.util.text.IconTooltipDataText
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -14,17 +13,8 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent
 import net.minecraft.client.gui.tooltip.TooltipComponent
 import net.minecraft.enchantment.Enchantment
-import net.minecraft.item.EnchantedBookItem
-import net.minecraft.item.Items
-import net.minecraft.registry.Registries
-import net.minecraft.registry.RegistryKey
-import net.minecraft.registry.RegistryKeys
-import net.minecraft.registry.RegistryWrapper
-import net.minecraft.registry.RegistryWrapper.WrapperLookup
 import net.minecraft.registry.entry.RegistryEntry
-import net.minecraft.registry.entry.RegistryEntryList
 import net.minecraft.text.Text
-import java.rmi.registry.Registry
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
@@ -37,7 +27,7 @@ object Util {
 
     @JvmStatic
     fun addDummyText(tooltip: Consumer<Text>, enchantment: RegistryEntry<Enchantment>) {
-        if (MinecraftClient.getInstance().currentScreen is HandledScreen<*> && getItemstack().item == Items.ENCHANTED_BOOK) {
+        if (MinecraftClient.getInstance().currentScreen is HandledScreen<*> && BetterEnchantedBooks.isCurrentItemStackEnchantedBookItem) {
             applyTooltip {
                 tooltip.accept(
                     IconTooltipDataText(
@@ -50,7 +40,7 @@ object Util {
 
     @JvmStatic
     fun convertTooltipComponents(components: List<TooltipComponent>): List<TooltipComponent> {
-        if (getItemstack().item != Items.ENCHANTED_BOOK) return components
+        if (!BetterEnchantedBooks.isCurrentItemStackEnchantedBookItem) return components
         applyTooltip {
             return components.map { component ->
                 convertComponentIfPossible(component)

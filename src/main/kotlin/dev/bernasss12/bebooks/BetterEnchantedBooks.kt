@@ -6,6 +6,7 @@ import dev.bernasss12.bebooks.manage.BookColorManager.itemColorProvider
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
+import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -14,6 +15,9 @@ import org.apache.logging.log4j.Logger
 object BetterEnchantedBooks {
 
     const val NAMESPACE = "bebooks"
+
+    var isCurrentItemStackEnchantedBookItem: Boolean = false
+        private set
 
     @Suppress("Unused")
     fun init() {
@@ -31,5 +35,9 @@ object BetterEnchantedBooks {
         DefaultConfigs.loadDefaultConfigurations()
         ModConfig.loadProperties()
         ModConfig.loadConfigs()
+    }
+
+    fun updateItemstack(stack: ItemStack) {
+        isCurrentItemStackEnchantedBookItem = ItemStack.areItemsEqual(stack, Items.ENCHANTED_BOOK.defaultStack)
     }
 }

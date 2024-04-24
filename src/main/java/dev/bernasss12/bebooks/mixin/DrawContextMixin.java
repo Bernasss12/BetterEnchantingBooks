@@ -6,8 +6,9 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
-import dev.bernasss12.bebooks.manage.ItemStackManager;
+import dev.bernasss12.bebooks.BetterEnchantedBooks;
 import dev.bernasss12.bebooks.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -26,16 +27,16 @@ public abstract class DrawContextMixin {
         at = @At("HEAD")
     )
     private void setEnchantedItemStack(TextRenderer textRenderer, ItemStack stack, int x, int y, CallbackInfo ci) {
-        ItemStackManager.setItemstack(stack);
+        BetterEnchantedBooks.INSTANCE.updateItemstack(stack);
     }
 
-    @Inject(
-            method = "drawItemTooltip(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;II)V",
-            at = @At(value = "TAIL")
-    )
-    private void forgetEnchantedItemStack(TextRenderer textRenderer, ItemStack stack, int x, int y, CallbackInfo ci) {
-        ItemStackManager.setItemstack(ItemStack.EMPTY);
-    }
+    //    @Inject( todo
+    //            method = "drawItemTooltip(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;II)V",
+    //            at = @At(value = "TAIL")
+    //    )
+    //    private void forgetEnchantedItemStack(TextRenderer textRenderer, ItemStack stack, int x, int y, CallbackInfo ci) {
+    //        ItemStackManager.setItemstack(ItemStack.EMPTY);
+    //    }
 
     @ModifyVariable(
         at = @At("HEAD"),

@@ -4,6 +4,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.bernasss12.bebooks.manage.MaxEnchantmentManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,10 +23,9 @@ public abstract class EnchantmentMixin {
 
     @Inject(
             at = @At(value = "TAIL"),
-            locals = LocalCapture.CAPTURE_FAILHARD,
             method = "getName(I)Lnet/minecraft/text/Text;"
     )
-    private void appendMaxEnchantmentLevel(int level, CallbackInfoReturnable<Text> info, MutableText enchantmentName) {
+    private void appendMaxEnchantmentLevel(int level, CallbackInfoReturnable<Text> info, @Local MutableText enchantmentName) {
         MaxEnchantmentManager.appendMaxEnchantmentLevel(level, this.getMaxLevel(), enchantmentName);
     }
 }
