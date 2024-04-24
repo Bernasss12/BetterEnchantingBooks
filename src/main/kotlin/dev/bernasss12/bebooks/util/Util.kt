@@ -25,6 +25,8 @@ import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.registry.entry.RegistryEntryList
 import net.minecraft.text.Text
 import java.rmi.registry.Registry
+import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 @Environment(EnvType.CLIENT)
 object Util {
@@ -34,12 +36,12 @@ object Util {
      */
 
     @JvmStatic
-    fun addTooltipIcons(tooltip: MutableList<Text>, enchantment: Enchantment) {
+    fun addDummyText(tooltip: Consumer<Text>, enchantment: RegistryEntry<Enchantment>) {
         if (MinecraftClient.getInstance().currentScreen is HandledScreen<*> && getItemstack().item == Items.ENCHANTED_BOOK) {
             applyTooltip {
-                tooltip.add(
+                tooltip.accept(
                     IconTooltipDataText(
-                        ModConfig.getApplicableItemIcons(enchantment)
+                        enchantment.key.getOrNull()?.value ?: return
                     )
                 )
             }
@@ -61,7 +63,7 @@ object Util {
         val orderedTextTooltipComponent = component as? OrderedTextTooltipComponent ?: return component
         val text = (orderedTextTooltipComponent as? OrderedTextTooltipComponentAccessor)?.text ?: return component
         val dataText = text as? IconTooltipDataText ?: return component
-        return IconTooltipComponent(dataText.icons)
+        return IconTooltipComponent(ModConfig.getApplicableItemIcons(dataText.enchantment))
     }
 
     /*

@@ -170,8 +170,8 @@ object ModConfig {
     fun getEnchantmentData(value: Identifier) =
         complexConfigsManager.getData(value)
 
-    fun getApplicableItemIcons(enchantment: Enchantment): Set<ItemStack> =
-        complexConfigsManager.getData(enchantment)?.applicableItemIcons ?: emptySet()
+    fun getApplicableItemIcons(identifier: Identifier): Set<ItemStack> =
+        complexConfigsManager.getData(identifier).applicableItemIcons
 
     /*
         Useful property methods.

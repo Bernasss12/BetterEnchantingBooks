@@ -1,9 +1,11 @@
 package dev.bernasss12.bebooks.util.text
 
+import net.minecraft.enchantment.Enchantment
 import net.minecraft.item.ItemStack
 import net.minecraft.text.*
+import net.minecraft.util.Identifier
 
-data class IconTooltipDataText(val icons: Set<ItemStack>) : OrderedText, Text {
+data class IconTooltipDataText(val enchantment: Identifier) : OrderedText, Text {
 
     override fun accept(visitor: CharacterVisitor?): Boolean = false
 
