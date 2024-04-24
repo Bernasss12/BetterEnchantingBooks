@@ -53,9 +53,8 @@ data class EnchantmentData(
 
     companion object {
         @JvmStatic
-        fun fromNBT(element: NbtElement): EnchantmentData {
-            val id: String = element.getEnchantmentID()
-            val identifier: Identifier = Identifier.tryParse(id) ?: error("Can't parse id")
+        fun fromEnchantment(enchantment: Enchantment): EnchantmentData {
+            val identifier: Identifier = Registries.ENCHANTMENT.getId(enchantment) ?: error("Can't find id for $enchantment")
             return ModConfig.getEnchantmentData(identifier)
         }
     }

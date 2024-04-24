@@ -8,8 +8,6 @@ enum class TooltipMode : Translatable {
     ON_SHIFT,
     DISABLED;
 
-    override fun getKey() = "enum.bebooks.tooltip_settings.${toString().lowercase()}"
-
     companion object {
         fun fromString(string: String): TooltipMode {
             for (value in entries) {
@@ -20,4 +18,6 @@ enum class TooltipMode : Translatable {
             return DEFAULT_TOOLTIP_MODE
         }
     }
+
+    override fun getKey() = "enum.bebooks.tooltip_settings.${toString().lowercase()}"
 }

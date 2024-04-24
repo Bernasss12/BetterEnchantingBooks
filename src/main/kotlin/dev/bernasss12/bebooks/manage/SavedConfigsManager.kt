@@ -21,6 +21,10 @@ class SavedConfigsManager {
     private val enchantmentConfigurations = hashMapOf<Identifier, EnchantmentData>()
     val applicableItemIcons = mutableSetOf<ItemStack>()
 
+    fun getData(): List<EnchantmentData> {
+        return enchantmentConfigurations.values.toList()
+    }
+
     fun getData(key: Identifier): EnchantmentData {
         return enchantmentConfigurations.getOrPut(key) {
             EnchantmentData(
@@ -96,7 +100,6 @@ class SavedConfigsManager {
         } catch (e: IOException) {
             LOGGER.debug("No configuration file found. Creating new one.")
         }
-        save()
     }
 
     private fun clear() {

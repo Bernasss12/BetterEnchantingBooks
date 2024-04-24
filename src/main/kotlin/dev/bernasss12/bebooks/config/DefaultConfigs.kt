@@ -27,6 +27,7 @@ object DefaultConfigs {
     // Sorting settings
     val DEFAULT_SORTING_MODE: SortingMode = SortingMode.ALPHABETICALLY
     const val DEFAULT_KEEP_CURSES_BELOW: Boolean = true
+    val DEFAULT_CURSE_MODE: CurseMode = CurseMode.BELOW
 
     // Tooltip settings
     const val DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL: Boolean = false

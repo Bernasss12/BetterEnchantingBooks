@@ -13,9 +13,12 @@ import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_SORTING_MODE
 import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_TOOLTIP_MODE
 import dev.bernasss12.bebooks.manage.SavedConfigsManager
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
+import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.item.ItemStack
+import net.minecraft.registry.entry.RegistryEntry
+import net.minecraft.registry.entry.RegistryEntryList
 import net.minecraft.util.Identifier
 import java.io.File
 import java.io.IOException
@@ -68,6 +71,15 @@ object ModConfig {
         get() = properties.getPropertyOrDefault("enchanted_book_glint", DEFAULT_GLINT_SETTING, String::toBoolean)
         set(value) = properties.setProperty("enchanted_book_glint", value)
 
+    // Enchantment color priority list
+    var enchantmentColorPriorityList: Set<Enchantment> = emptySet()
+        private set
+
+    // Tooltip sorting priority list
+    var enchantmentTooltipPriorityList: RegistryEntryList<Enchantment> = RegistryEntryList.empty()
+        private set
+        // TODO utilize backing property and dirty state and make it so when it's queried and dirty it will be recalculated.
+
     inline fun <T> applyTooltip(block: () -> T) {
         if (tooltipMode == TooltipMode.ENABLED || (tooltipMode == TooltipMode.ON_SHIFT && Screen.hasShiftDown())) {
             block.invoke()
@@ -89,6 +101,8 @@ object ModConfig {
 
     fun loadConfigs() {
         complexConfigsManager.load()
+        saveConfigs()
+        reloadPriorityLists()
     }
 
     fun saveProperties() {
@@ -114,11 +128,47 @@ object ModConfig {
         complexConfigsManager.save()
     }
 
+    private fun Collection<EnchantmentData>.sortToEnchantmentSet(sortingMode: SortingMode): Set<EnchantmentData> {
+        return when (sortingMode) {
+            SortingMode.ALPHABETICALLY -> sortedBy { it.translated }
+            SortingMode.CUSTOM -> sortedBy { it.priority }
+            SortingMode.DISABLED -> emptyList()
+
+        }.toSet()
+    }
+
+    private fun Collection<EnchantmentData>.sortCurses(curseMode: CurseMode): Set<EnchantmentData> {
+        return when (curseMode) {
+            CurseMode.ABOVE -> sortedBy { !it.curse }
+            CurseMode.BELOW -> sortedBy { it.curse }
+            CurseMode.IGNORE -> this
+        }.toSet()
+    }
+
+    private fun Collection<EnchantmentData>.toEnchantmentSet() : Set<Enchantment> = mapNotNull { it.enchantment }.toSet()
+
+    private fun Collection<RegistryEntry<Enchantment>>.toRegistryList(): RegistryEntryList<Enchantment> = RegistryEntryList.of(this.toList())
+
+    private fun reloadPriorityLists() {
+        enchantmentColorPriorityList = complexConfigsManager.getData()
+            .sortToEnchantmentSet(colorMode)
+            .sortCurses(if (overrideCurseColor) CurseMode.ABOVE else CurseMode.IGNORE)
+            .toEnchantmentSet()
+
+        enchantmentTooltipPriorityList = complexConfigsManager.getData()
+            .sortToEnchantmentSet(sortingMode)
+            .sortCurses(if (keepCursesBelow) CurseMode.BELOW else CurseMode.IGNORE)
+            .toEnchantmentSet()
+            .map { it.registryEntry }
+            .toRegistryList()
+    }
+
     /*
         Saved configs wrapper.
      */
 
-    fun getEnchantmentData(value: Identifier) = complexConfigsManager.getData(value)
+    fun getEnchantmentData(value: Identifier) =
+        complexConfigsManager.getData(value)
 
     fun getApplicableItemIcons(enchantment: Enchantment): Set<ItemStack> =
         complexConfigsManager.getData(enchantment)?.applicableItemIcons ?: emptySet()
