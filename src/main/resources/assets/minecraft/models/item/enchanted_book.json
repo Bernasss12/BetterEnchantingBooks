@@ -1,7 +1,7 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "item/enchanted_book",
+    "layer0": "minecraft:item/enchanted_book",
     "layer1": "bebooks:item/enchanted_book_strip"
   }
 }

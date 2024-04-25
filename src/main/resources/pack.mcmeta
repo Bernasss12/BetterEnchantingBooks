@@ -1,6 +1,6 @@
 ﻿{
   "pack": {
-    "pack_format": 15,
+    "pack_format": 31,
     "description": "Adds the required texture and default configurations to the mod."
   }
 }

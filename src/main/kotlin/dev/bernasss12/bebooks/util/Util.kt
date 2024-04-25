@@ -12,7 +12,10 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent
 import net.minecraft.client.gui.tooltip.TooltipComponent
+import net.minecraft.component.DataComponentTypes
+import net.minecraft.component.type.ItemEnchantmentsComponent
 import net.minecraft.enchantment.Enchantment
+import net.minecraft.item.ItemStack
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.text.Text
 import java.util.function.Consumer
@@ -78,6 +81,10 @@ object Util {
         val b = values[2].trim().toInt()
 
         return (r shl 16) + (g shl 8) + b
+    }
+
+    fun ItemStack.getStoredEnchantments(): ItemEnchantmentsComponent? {
+        return get(DataComponentTypes.STORED_ENCHANTMENTS)
     }
 
 }

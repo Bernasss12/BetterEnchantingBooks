@@ -3,7 +3,6 @@ package dev.bernasss12.bebooks.model.enchantment
 import dev.bernasss12.bebooks.config.DefaultConfigs
 import dev.bernasss12.bebooks.config.ModConfig
 import dev.bernasss12.bebooks.model.color.ColorSavingMode
-import dev.bernasss12.bebooks.util.NBTUtil.getEnchantmentID
 import dev.bernasss12.bebooks.util.Util.isInt
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -16,7 +15,6 @@ import kotlinx.serialization.encoding.Encoder
 import net.minecraft.client.resource.language.I18n
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NbtElement
 import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
 import java.awt.Color
