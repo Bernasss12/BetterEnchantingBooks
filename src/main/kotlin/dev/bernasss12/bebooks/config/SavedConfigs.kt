@@ -1,8 +1,10 @@
 package dev.bernasss12.bebooks.config
 
-import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
+import dev.bernasss12.bebooks.BetterEnchantedBooks.LOGGER
+import dev.bernasss12.bebooks.config.model.EnchantmentData
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -11,6 +13,7 @@ import kotlinx.serialization.json.Json
 import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
+import java.awt.Color
 import java.io.File
 import kotlin.jvm.optionals.getOrNull
 
@@ -34,20 +37,69 @@ import kotlin.jvm.optionals.getOrNull
  */
 @Serializable
 data class SavedConfigs(
-    val version: Int = CURRENT_VERSION,
+    val version: Int,
     val enchantments: List<EnchantmentData> = emptyList(),
     val icons: Set<@Serializable(with = ItemStackSerializer::class) ItemStack> = emptySet()
 ) {
+
+    @Serializable
+    /**
+     * Simple class to decode the version from the object without decoding the whole object.
+     * @param version the default value is one because it will only be missing when reading before version 2.
+     */
+    private data class ConfigVersion(val version: Int = 1)
+
+    @Serializable
+    private data class LegacyEnchantmentData(val orderIndex: Int?, val color: Int?)
+
     companion object {
-        private const val CURRENT_VERSION = 3
+        const val CURRENT_VERSION = 3
+
+        val DEFAULT = SavedConfigs(CURRENT_VERSION)
 
         private val json = Json {
             prettyPrint = true
             encodeDefaults = false
+            ignoreUnknownKeys = true
         }
 
         fun readFromJson(jsonString: String): SavedConfigs {
-            return json.decodeFromString(jsonString)
+            val version = json.decodeFromString<ConfigVersion>(jsonString).version
+            try {
+                when (version) {
+                    3, 2 -> {
+                        LOGGER.info("Loading config file.")
+                        val data = json.decodeFromString<SavedConfigs>(jsonString)
+                        LOGGER.info("Config file loaded.")
+                        return data
+                    }
+
+                    else -> {
+                        LOGGER.warn("Reading from legacy file.")
+                        val oldConfig = json.decodeFromString<Map<String, LegacyEnchantmentData>>(jsonString)
+                        val data = SavedConfigs(
+                            version = CURRENT_VERSION,
+                            enchantments = oldConfig.mapNotNull { (id, data) ->
+                                EnchantmentData(
+                                    identifier = Identifier.tryParse(id) ?: return@mapNotNull null,
+                                    priority = data.orderIndex,
+                                    color = data.color?.let { Color(it) }
+                                )
+                            }
+                        )
+                        LOGGER.error("Legacy format read. Old index random values pointless. Suggest deleting settings file if no color values changed.")
+                        LOGGER.error("It is also recommended that you change a setting so this file is overwritten with a newer one.")
+                        return data
+                    }
+                }
+            } catch (e: SerializationException) {
+                LOGGER.error("Error reading saved config file.")
+                return SavedConfigs(
+                    version = CURRENT_VERSION,
+                    enchantments = emptyList(),
+                    icons = emptySet()
+                )
+            }
         }
     }
 

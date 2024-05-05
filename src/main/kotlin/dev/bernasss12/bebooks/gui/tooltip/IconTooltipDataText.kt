@@ -1,11 +1,10 @@
-package dev.bernasss12.bebooks.util.text
+package dev.bernasss12.bebooks.gui.tooltip
 
 import net.minecraft.enchantment.Enchantment
-import net.minecraft.item.ItemStack
+import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.text.*
-import net.minecraft.util.Identifier
 
-data class IconTooltipDataText(val enchantment: Identifier) : OrderedText, Text {
+data class IconTooltipDataText(val enchantment: RegistryEntry<Enchantment>) : OrderedText, Text {
 
     override fun accept(visitor: CharacterVisitor?): Boolean = false
 

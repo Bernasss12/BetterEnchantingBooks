@@ -1,8 +1,8 @@
 package dev.bernasss12.bebooks
 
-import dev.bernasss12.bebooks.config.DefaultConfigs
+import dev.bernasss12.bebooks.config.BookColorManager.itemColorProvider
 import dev.bernasss12.bebooks.config.ModConfig
-import dev.bernasss12.bebooks.manage.BookColorManager.itemColorProvider
+import dev.bernasss12.bebooks.config.SavedConfigManager
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
@@ -31,10 +31,9 @@ object BetterEnchantedBooks {
      */
     @JvmStatic
     fun lateInit() {
+        SavedConfigManager.loadFromDisk()
         // TODO Make sure default configs and saved configs reload on resource pack reloading.
-        DefaultConfigs.loadDefaultConfigurations()
         ModConfig.loadProperties()
-        ModConfig.loadConfigs()
     }
 
     fun updateItemstack(stack: ItemStack) {

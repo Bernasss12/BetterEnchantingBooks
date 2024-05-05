@@ -1,4 +1,4 @@
-package dev.bernasss12.bebooks.model.color
+package dev.bernasss12.bebooks.config.model
 
 import dev.bernasss12.bebooks.util.Util.decodeRGB
 import dev.bernasss12.bebooks.util.Util.encodeRGB

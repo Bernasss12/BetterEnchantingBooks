@@ -1,14 +1,15 @@
 package dev.bernasss12.bebooks.config
 
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_COLOR_BOOKS
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_COLOR_MODE
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_COLOR_SAVING_MODE
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_CURSE_COLOR_OVERRIDE
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_GLINT_SETTING
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_KEEP_CURSES_BELOW
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_SORTING_MODE
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_TOOLTIP_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_BOOK_STRIP_COLOR
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_COLOR_BOOKS
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_COLOR_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_COLOR_SAVING_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_CURSE_COLOR_OVERRIDE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_GLINT_SETTING
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_KEEP_CURSES_BELOW
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SORTING_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_TOOLTIP_MODE
 import dev.bernasss12.bebooks.config.ModConfig.colorBooks
 import dev.bernasss12.bebooks.config.ModConfig.colorMode
 import dev.bernasss12.bebooks.config.ModConfig.colorSavingMode
@@ -18,8 +19,9 @@ import dev.bernasss12.bebooks.config.ModConfig.overrideCurseColor
 import dev.bernasss12.bebooks.config.ModConfig.showMaxEnchantmentLevel
 import dev.bernasss12.bebooks.config.ModConfig.sortingMode
 import dev.bernasss12.bebooks.config.ModConfig.tooltipMode
-import dev.bernasss12.bebooks.manage.BookColorManager
-import dev.bernasss12.bebooks.model.color.ColorSavingMode
+import dev.bernasss12.bebooks.config.model.ColorSavingMode
+import dev.bernasss12.bebooks.config.model.SortingMode
+import dev.bernasss12.bebooks.config.model.TooltipMode
 import dev.bernasss12.bebooks.util.Util.noAlpha
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry
 import me.shedaniel.clothconfig2.api.ConfigBuilder
@@ -92,12 +94,13 @@ object ModConfigScreenBuilder {
             )
 
             val entries = ArrayList<AbstractConfigListEntry<*>>()
-            val enchantments = Registries.ENCHANTMENT.keys.map { ModConfig.getEnchantmentData(it.value) }
+            val enchantments = Registries.ENCHANTMENT.keys.mapNotNull { SavedConfigManager.getEnchantmentData(it.value) }
             for (enchantment in enchantments) {
                 if (enchantment.enchantment == null) continue  // not registered
                 entries.add(
-                    entryBuilder.startColorField(Text.literal(enchantment.translated), enchantment.color.rgb.noAlpha()).apply {
-                        setDefaultValue(DefaultConfigs.getDefaultColor(enchantment.identifier).rgb.noAlpha())
+                    entryBuilder.startColorField(Text.literal(enchantment.translated), enchantment.color?.rgb?.noAlpha() ?: DEFAULT_BOOK_STRIP_COLOR.rgb)
+                        .apply {
+                            setDefaultValue(SavedConfigManager.getDefaultColor(enchantment.identifier).rgb.noAlpha())
                         setSaveConsumer { enchantment.color = Color(it) }
                         setAlphaMode(false)
                     }.build()
@@ -146,7 +149,8 @@ object ModConfigScreenBuilder {
 
         setSavingRunnable {
             ModConfig.saveProperties()
-            ModConfig.saveConfigs()
+            SavedConfigManager.saveToDisk()
+            SavedConfigManager.reload()
             BookColorManager.clear()
         }
 

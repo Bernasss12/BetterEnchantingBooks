@@ -1,6 +1,6 @@
-package dev.bernasss12.bebooks.config
+package dev.bernasss12.bebooks.config.model
 
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_SORTING_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SORTING_MODE
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable
 
 enum class SortingMode : Translatable {

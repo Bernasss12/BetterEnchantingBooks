@@ -1,8 +1,6 @@
-package dev.bernasss12.bebooks.model.enchantment
+package dev.bernasss12.bebooks.config.model
 
-import dev.bernasss12.bebooks.config.DefaultConfigs
 import dev.bernasss12.bebooks.config.ModConfig
-import dev.bernasss12.bebooks.model.color.ColorSavingMode
 import dev.bernasss12.bebooks.util.Util.isInt
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -14,7 +12,6 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.minecraft.client.resource.language.I18n
 import net.minecraft.enchantment.Enchantment
-import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
 import java.awt.Color
@@ -23,18 +20,12 @@ import java.awt.Color
 data class EnchantmentData(
     @Serializable(with = IdentifierSerializer::class)
     val identifier: Identifier,
-    var priority: Int = -1,
+    var priority: Int? = null,
     @Serializable(with = ColorSerializer::class)
-    var color: Color = DefaultConfigs.getDefaultColor(identifier)
+    var color: Color? = null
 ) {
     val enchantment: Enchantment? by lazy {
         Registries.ENCHANTMENT[identifier]
-    }
-
-    val applicableItemIcons: Set<ItemStack> by lazy {
-        ModConfig.applicableItemIcons.filter { currentItem ->
-            enchantment?.isAcceptableItem(currentItem) ?: false
-        }.toSet()
     }
 
     val translated: String by lazy {
@@ -46,16 +37,13 @@ data class EnchantmentData(
     val curse: Boolean
         get() = enchantment?.isCursed ?: false
 
-    // TODO add way to check if current value is the same as default, depending on identifier.
-    // TODO extract needed data as interface and have real and fake enchantments
-
-    companion object {
-        @JvmStatic
-        fun fromEnchantment(enchantment: Enchantment): EnchantmentData {
-            val identifier: Identifier = Registries.ENCHANTMENT.getId(enchantment) ?: error("Can't find id for $enchantment")
-            return ModConfig.getEnchantmentData(identifier)
-        }
-    }
+//    companion object {
+//        @JvmStatic
+//        fun fromEnchantment(enchantment: Enchantment): EnchantmentData {
+//            val identifier: Identifier = Registries.ENCHANTMENT.getId(enchantment) ?: error("Can't find id for $enchantment")
+//            return SavedConfigManager.getEnchantmentData(identifier) ?: EnchantmentData(identifier)
+//        }
+//    }
 
     object IdentifierSerializer : KSerializer<Identifier> {
         override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Identifier", PrimitiveKind.STRING)
@@ -87,6 +75,5 @@ data class EnchantmentData(
                 ModConfig.colorSavingMode.serialize(value)
             )
         }
-
     }
 }

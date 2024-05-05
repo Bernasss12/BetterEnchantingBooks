@@ -3,9 +3,10 @@ package dev.bernasss12.bebooks.util
 import dev.bernasss12.bebooks.BetterEnchantedBooks
 import dev.bernasss12.bebooks.config.ModConfig
 import dev.bernasss12.bebooks.config.ModConfig.applyTooltip
+import dev.bernasss12.bebooks.config.SavedConfigManager
 import dev.bernasss12.bebooks.gui.tooltip.IconTooltipComponent
+import dev.bernasss12.bebooks.gui.tooltip.IconTooltipDataText
 import dev.bernasss12.bebooks.mixin.OrderedTextTooltipComponentAccessor
-import dev.bernasss12.bebooks.util.text.IconTooltipDataText
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.MinecraftClient
@@ -17,12 +18,27 @@ import net.minecraft.component.type.ItemEnchantmentsComponent
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.item.ItemStack
 import net.minecraft.registry.entry.RegistryEntry
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import java.util.function.Consumer
-import kotlin.jvm.optionals.getOrNull
 
 @Environment(EnvType.CLIENT)
 object Util {
+
+    /*
+        Append max enchantment level to tooltip line.
+     */
+
+    @JvmStatic
+    fun appendMaxEnchantmentLevel(level: Int, maxLevel: Int, enchantmentName: MutableText) {
+        if (
+            ModConfig.showMaxEnchantmentLevel &&
+            (level != 1 || maxLevel != 1) &&
+            BetterEnchantedBooks.isCurrentItemStackEnchantedBookItem
+        ) {
+            enchantmentName.append("/").append(Text.translatable("enchantment.level.$maxLevel"))
+        }
+    }
 
     /*
         Icon utility methods.
@@ -34,7 +50,7 @@ object Util {
             applyTooltip {
                 tooltip.accept(
                     IconTooltipDataText(
-                        enchantment.key.getOrNull()?.value ?: return
+                        enchantment
                     )
                 )
             }
@@ -56,7 +72,7 @@ object Util {
         val orderedTextTooltipComponent = component as? OrderedTextTooltipComponent ?: return component
         val text = (orderedTextTooltipComponent as? OrderedTextTooltipComponentAccessor)?.text ?: return component
         val dataText = text as? IconTooltipDataText ?: return component
-        return IconTooltipComponent(ModConfig.getApplicableItemIcons(dataText.enchantment))
+        return IconTooltipComponent(SavedConfigManager.getApplicableItems(dataText.enchantment.key.get().value))
     }
 
     /*

@@ -15,9 +15,8 @@ import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import dev.bernasss12.bebooks.config.ModConfig;
-import dev.bernasss12.bebooks.config.SortingMode;
+import dev.bernasss12.bebooks.config.model.SortingMode;
 import dev.bernasss12.bebooks.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -1,6 +1,6 @@
-package dev.bernasss12.bebooks.config
+package dev.bernasss12.bebooks.config.model
 
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_TOOLTIP_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_TOOLTIP_MODE
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry.Translatable
 
 enum class TooltipMode : Translatable {

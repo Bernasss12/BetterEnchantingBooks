@@ -1,40 +1,56 @@
 package dev.bernasss12.bebooks.config
 
 import dev.bernasss12.bebooks.BetterEnchantedBooks.LOGGER
-import dev.bernasss12.bebooks.config.DefaultConfigs.CONFIG_DIR
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_COLOR_BOOKS
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_COLOR_MODE
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_COLOR_SAVING_MODE
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_CURSE_COLOR_OVERRIDE
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_GLINT_SETTING
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_KEEP_CURSES_BELOW
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_SORTING_MODE
-import dev.bernasss12.bebooks.config.DefaultConfigs.DEFAULT_TOOLTIP_MODE
-import dev.bernasss12.bebooks.manage.SavedConfigsManager
-import dev.bernasss12.bebooks.model.color.ColorSavingMode
-import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_COLOR_BOOKS
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_COLOR_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_COLOR_SAVING_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_CURSE_COLOR_OVERRIDE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_GLINT_SETTING
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_KEEP_CURSES_BELOW
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SORTING_MODE
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_TOOLTIP_MODE
+import dev.bernasss12.bebooks.config.SavedConfigManager.CONFIG_DIR
+import dev.bernasss12.bebooks.config.model.*
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.enchantment.Enchantment
-import net.minecraft.item.ItemStack
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.registry.entry.RegistryEntryList
-import net.minecraft.util.Identifier
+import java.awt.Color
 import java.io.File
 import java.io.IOException
 import java.util.*
 import kotlin.io.path.createDirectories
 
 object ModConfig {
+
+    object Defaults {
+        // Sorting settings
+        val DEFAULT_SORTING_MODE: SortingMode = SortingMode.ALPHABETICALLY
+        const val DEFAULT_KEEP_CURSES_BELOW: Boolean = true
+        val DEFAULT_CURSE_MODE: CurseMode = CurseMode.BELOW
+
+        // Tooltip settings
+        const val DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL: Boolean = false
+        val DEFAULT_TOOLTIP_MODE: TooltipMode = TooltipMode.ON_SHIFT
+
+        // Coloring settings
+        const val DEFAULT_COLOR_BOOKS: Boolean = true
+        const val DEFAULT_CURSE_COLOR_OVERRIDE: Boolean = true
+        val DEFAULT_COLOR_MODE: SortingMode = SortingMode.ALPHABETICALLY
+        val DEFAULT_COLOR_SAVING_MODE: ColorSavingMode = ColorSavingMode.HEXADECIMAL
+
+        // Remove enchantment glint
+        const val DEFAULT_GLINT_SETTING: Boolean = false
+
+        // Minecraft's enchantment book strip color
+        val DEFAULT_BOOK_STRIP_COLOR: Color = Color(0xc5133a)
+    }
+
     private val file: File = CONFIG_DIR.resolve("config.properties").toFile()
     private val properties: Properties = object : Properties() {
         override val values: MutableCollection<Any> = linkedSetOf()
     }
-
-    private val complexConfigsManager = SavedConfigsManager()
-
-    val applicableItemIcons: Set<ItemStack>
-        get() = complexConfigsManager.applicableItemIcons.toSet()
 
     // Sorting settings
     var sortingMode: SortingMode
@@ -72,7 +88,7 @@ object ModConfig {
         set(value) = properties.setProperty("enchanted_book_glint", value)
 
     // Enchantment color priority list
-    var enchantmentColorPriorityList: Set<Enchantment> = emptySet()
+    private var enchantmentColorPriorityList: Set<Enchantment> = emptySet()
         private set
 
     // Tooltip sorting priority list
@@ -99,12 +115,6 @@ object ModConfig {
         }
     }
 
-    fun loadConfigs() {
-        complexConfigsManager.load()
-        saveConfigs()
-        reloadPriorityLists()
-    }
-
     fun saveProperties() {
         try {
             CONFIG_DIR.createDirectories()
@@ -122,10 +132,6 @@ object ModConfig {
         } catch (e: IOException) {
             LOGGER.error("Couldn't create config directory.\nChanged settings could be lost!", e)
         }
-    }
-
-    fun saveConfigs() {
-        complexConfigsManager.save()
     }
 
     private fun Collection<EnchantmentData>.sortToEnchantmentSet(sortingMode: SortingMode): Set<EnchantmentData> {
@@ -149,29 +155,19 @@ object ModConfig {
 
     private fun Collection<RegistryEntry<Enchantment>>.toRegistryList(): RegistryEntryList<Enchantment> = RegistryEntryList.of(this.toList())
 
-    private fun reloadPriorityLists() {
-        enchantmentColorPriorityList = complexConfigsManager.getData()
+    fun reloadPriorityLists() {
+        enchantmentColorPriorityList = SavedConfigManager.getAllEnchantmentData()
             .sortToEnchantmentSet(colorMode)
             .sortCurses(if (overrideCurseColor) CurseMode.ABOVE else CurseMode.IGNORE)
             .toEnchantmentSet()
 
-        enchantmentTooltipPriorityList = complexConfigsManager.getData()
+        enchantmentTooltipPriorityList = SavedConfigManager.getAllEnchantmentData()
             .sortToEnchantmentSet(sortingMode)
             .sortCurses(if (keepCursesBelow) CurseMode.BELOW else CurseMode.IGNORE)
             .toEnchantmentSet()
             .map { it.registryEntry }
             .toRegistryList()
     }
-
-    /*
-        Saved configs wrapper.
-     */
-
-    fun getEnchantmentData(value: Identifier) =
-        complexConfigsManager.getData(value)
-
-    fun getApplicableItemIcons(identifier: Identifier): Set<ItemStack> =
-        complexConfigsManager.getData(identifier).applicableItemIcons
 
     /*
         Useful property methods.
