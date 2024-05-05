@@ -13,10 +13,11 @@ import net.minecraft.util.Identifier
 import java.awt.Color
 import java.io.IOException
 import java.nio.file.Path
+import kotlin.io.path.createDirectories
 import kotlin.jvm.optionals.getOrNull
 
 object DefaultConfigs {
-    val CONFIG_DIR: Path = FabricLoader.getInstance().configDir.resolve(NAMESPACE)
+    val CONFIG_DIR: Path = FabricLoader.getInstance().configDir.resolve(NAMESPACE).also { it.createDirectories() }
 
     // Enchantment colors and sorting priorities
     private var ENCHANTMENTS: Map<Identifier, EnchantmentData> = mapOf()

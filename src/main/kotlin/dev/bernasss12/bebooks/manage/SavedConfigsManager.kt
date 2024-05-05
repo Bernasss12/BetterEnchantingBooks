@@ -3,6 +3,7 @@ package dev.bernasss12.bebooks.manage
 import dev.bernasss12.bebooks.BetterEnchantedBooks.LOGGER
 import dev.bernasss12.bebooks.config.DefaultConfigs
 import dev.bernasss12.bebooks.config.SavedConfigs
+import dev.bernasss12.bebooks.config.SavedConfigs.Companion.CURRENT_VERSION
 import dev.bernasss12.bebooks.model.enchantment.EnchantmentData
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
@@ -52,6 +53,7 @@ class SavedConfigsManager {
         ) applicableItemIcons else emptySet()
 
         SavedConfigs(
+            version = CURRENT_VERSION,
             enchantments = nonDefaultEnchantmentData,
             icons = applicableItemsDifference
         ).writeToFile(file)

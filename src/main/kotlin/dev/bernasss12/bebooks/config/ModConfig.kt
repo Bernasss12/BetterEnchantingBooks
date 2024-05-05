@@ -84,6 +84,18 @@ object ModConfig {
             } catch (e: IOException) {
                 LOGGER.warn("Could not read ${file.name} properties file. Using defaults.")
             }
+        } else {
+            sortingMode
+            keepCursesBelow
+            showMaxEnchantmentLevel
+            tooltipMode
+            colorBooks
+            overrideCurseColor
+            colorMode
+            colorSavingMode
+            enchantedBookGlint
+
+            saveProperties()
         }
     }
 

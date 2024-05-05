@@ -34,12 +34,12 @@ import kotlin.jvm.optionals.getOrNull
  */
 @Serializable
 data class SavedConfigs(
-    val version: Int = CURRENT_VERSION,
+    val version: Int,
     val enchantments: List<EnchantmentData> = emptyList(),
     val icons: Set<@Serializable(with = ItemStackSerializer::class) ItemStack> = emptySet()
 ) {
     companion object {
-        private const val CURRENT_VERSION = 3
+        const val CURRENT_VERSION = 3
 
         private val json = Json {
             prettyPrint = true

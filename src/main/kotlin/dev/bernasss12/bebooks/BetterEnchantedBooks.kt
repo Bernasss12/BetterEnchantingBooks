@@ -28,8 +28,8 @@ object BetterEnchantedBooks {
     @JvmStatic
     fun lateInit() {
         // TODO Make sure default configs and saved configs reload on resource pack reloading.
-        DefaultConfigs.loadDefaultConfigurations()
         ModConfig.loadProperties()
         ModConfig.loadConfigs()
+        DefaultConfigs.loadDefaultConfigurations()
     }
 }
