@@ -31,9 +31,9 @@ object BetterEnchantedBooks {
      */
     @JvmStatic
     fun lateInit() {
-        SavedConfigManager.loadFromDisk()
         // TODO Make sure default configs and saved configs reload on resource pack reloading.
         ModConfig.loadProperties()
+        SavedConfigManager.loadFromDisk()
     }
 
     fun updateItemstack(stack: ItemStack) {
