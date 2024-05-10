@@ -22,6 +22,11 @@ import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import java.util.function.Consumer
 
+/**
+ * Utility class containing various methods for tooltip manipulation and icon rendering.
+ *
+ * Note: This class is designed to be used in a client-side environment.
+ */
 @Environment(EnvType.CLIENT)
 object Util {
 
@@ -29,15 +34,52 @@ object Util {
         Append max enchantment level to tooltip line.
      */
 
+    /**
+     * Appends the maximum enchantment level to the given enchantment name if necessary.
+     *
+     * @param level The current enchantment level.
+     * @param maxLevel The maximum enchantment level.
+     * @param enchantmentName The mutable text object representing the enchantment name.
+     */
     @JvmStatic
     fun appendMaxEnchantmentLevel(level: Int, maxLevel: Int, enchantmentName: MutableText) {
-        if (
-            ModConfig.showMaxEnchantmentLevel &&
-            (level != 1 || maxLevel != 1) &&
-            BetterEnchantedBooks.isCurrentItemStackEnchantedBookItem
-        ) {
+        if (maxLevel == 1 || level > maxLevel) return
+
+        if (shouldRenderMaxEnchantmentLevel()) {
             enchantmentName.append("/").append(Text.translatable("enchantment.level.$maxLevel"))
         }
+    }
+
+
+    /**
+     * Determines whether the maximum enchantment level should be rendered.
+     * The method checks various conditions to determine if the maximum enchantment level
+     * should be rendered based on the current configuration and item context.
+     *
+     * @return true if the maximum enchantment level should be rendered, false otherwise.
+     */
+    private fun shouldRenderMaxEnchantmentLevel(): Boolean {
+        // Render on enchanted books if the current stack is enchanted book.
+        if (
+            ModConfig.showMaxEnchantmentLevel &&
+            BetterEnchantedBooks.isCurrentItemStackEnchantedBookItem
+        ) return true
+
+        // Render on all items when current item is not empty and not enchanted book.
+        if (
+            ModConfig.showMaxEnchantmentLevelAllItems &&
+            !BetterEnchantedBooks.isCurrentItemStackEmpty &&
+            !BetterEnchantedBooks.isCurrentItemStackEnchantedBookItem
+        ) return true
+
+        // Render on enchantment table when the current itemstack is empty and current screen is enchantment table.
+        if (
+            ModConfig.showMaxEnchantmentLevelEnchantingTable &&
+            BetterEnchantedBooks.isCurrentItemStackEmpty &&
+            BetterEnchantedBooks.isCurrentScreenEnchantedScreen
+        ) return true
+
+        return false
     }
 
     /*

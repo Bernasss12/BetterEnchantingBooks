@@ -8,6 +8,8 @@ import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_CURSE_COLOR_OVER
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_GLINT_SETTING
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_KEEP_CURSES_BELOW
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ALL_ITEMS
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ENCHANTING_TABLE
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SORTING_MODE
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_TOOLTIP_MODE
 import dev.bernasss12.bebooks.config.ModConfig.colorBooks
@@ -17,6 +19,8 @@ import dev.bernasss12.bebooks.config.ModConfig.enchantedBookGlint
 import dev.bernasss12.bebooks.config.ModConfig.keepCursesBelow
 import dev.bernasss12.bebooks.config.ModConfig.overrideCurseColor
 import dev.bernasss12.bebooks.config.ModConfig.showMaxEnchantmentLevel
+import dev.bernasss12.bebooks.config.ModConfig.showMaxEnchantmentLevelAllItems
+import dev.bernasss12.bebooks.config.ModConfig.showMaxEnchantmentLevelEnchantingTable
 import dev.bernasss12.bebooks.config.ModConfig.sortingMode
 import dev.bernasss12.bebooks.config.ModConfig.tooltipMode
 import dev.bernasss12.bebooks.config.model.ColorSavingMode
@@ -134,6 +138,24 @@ object ModConfigScreenBuilder {
                 ).apply {
                     setDefaultValue(DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL)
                     setSaveConsumer { showMaxEnchantmentLevel = it }
+                }.build()
+            )
+            addEntry(
+                entryBuilder.startBooleanToggle(
+                    Text.translatable("entry.bebooks.tooltip_settings.show_enchantment_max_level_enchanting_table"),
+                    showMaxEnchantmentLevelEnchantingTable
+                ).apply {
+                    setDefaultValue(DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ENCHANTING_TABLE)
+                    setSaveConsumer { showMaxEnchantmentLevelEnchantingTable = it }
+                }.build()
+            )
+            addEntry(
+                entryBuilder.startBooleanToggle(
+                    Text.translatable("entry.bebooks.tooltip_settings.show_enchantment_max_level_all_items"),
+                    showMaxEnchantmentLevelAllItems
+                ).apply {
+                    setDefaultValue(DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ALL_ITEMS)
+                    setSaveConsumer { showMaxEnchantmentLevelAllItems = it }
                 }.build()
             )
             addEntry(

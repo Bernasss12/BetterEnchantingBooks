@@ -6,6 +6,8 @@ import dev.bernasss12.bebooks.config.SavedConfigManager
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry
+import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.screen.ingame.EnchantmentScreen
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import org.apache.logging.log4j.LogManager
@@ -18,6 +20,12 @@ object BetterEnchantedBooks {
 
     var isCurrentItemStackEnchantedBookItem: Boolean = false
         private set
+
+    var isCurrentItemStackEmpty: Boolean = false
+        private set
+
+    val isCurrentScreenEnchantedScreen: Boolean
+        get() = MinecraftClient.getInstance().currentScreen is EnchantmentScreen
 
     @Suppress("Unused")
     fun init() {
@@ -36,7 +44,9 @@ object BetterEnchantedBooks {
         SavedConfigManager.loadFromDisk()
     }
 
-    fun updateItemstack(stack: ItemStack) {
-        isCurrentItemStackEnchantedBookItem = ItemStack.areItemsEqual(stack, Items.ENCHANTED_BOOK.defaultStack)
+    @JvmStatic
+    fun updateItemstack(stack: ItemStack?) {
+        isCurrentItemStackEmpty = stack?.isEmpty ?: true
+        isCurrentItemStackEnchantedBookItem = !isCurrentItemStackEmpty && ItemStack.areItemsEqual(stack, Items.ENCHANTED_BOOK.defaultStack)
     }
 }

@@ -8,6 +8,8 @@ import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_CURSE_COLOR_OVER
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_GLINT_SETTING
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_KEEP_CURSES_BELOW
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ALL_ITEMS
+import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ENCHANTING_TABLE
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SORTING_MODE
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_TOOLTIP_MODE
 import dev.bernasss12.bebooks.config.SavedConfigManager.CONFIG_DIR
@@ -32,6 +34,8 @@ object ModConfig {
 
         // Tooltip settings
         const val DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL: Boolean = false
+        const val DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ENCHANTING_TABLE: Boolean = true
+        const val DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ALL_ITEMS: Boolean = false
         val DEFAULT_TOOLTIP_MODE: TooltipMode = TooltipMode.ON_SHIFT
 
         // Coloring settings
@@ -64,6 +68,12 @@ object ModConfig {
     var showMaxEnchantmentLevel: Boolean
         get() = properties.getPropertyOrDefault("show_max_enchantment_level", DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL, String::toBoolean)
         set(value) = properties.setProperty("show_max_enchantment_level", value)
+    var showMaxEnchantmentLevelEnchantingTable: Boolean
+        get() = properties.getPropertyOrDefault("show_max_enchantment_level_enchanting_table", DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ENCHANTING_TABLE, String::toBoolean)
+        set(value) = properties.setProperty("show_max_enchantment_level_enchanting_table", value)
+    var showMaxEnchantmentLevelAllItems: Boolean
+        get() = properties.getPropertyOrDefault("show_max_enchantment_level_all_items", DEFAULT_SHOW_ENCHANTMENT_MAX_LEVEL_ALL_ITEMS, String::toBoolean)
+        set(value) = properties.setProperty("show_max_enchantment_level_all_items", value)
     var tooltipMode: TooltipMode
         get() = properties.getPropertyOrDefault("tooltip_mode", DEFAULT_TOOLTIP_MODE, TooltipMode::fromString)
         set(value) = properties.setProperty("tooltip_mode", value)

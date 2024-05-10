@@ -8,13 +8,19 @@
   "entry.bebooks.book_coloring_settings.active": "Colorar livros",
   "entry.bebooks.book_coloring_settings.color_mode": "Como escolher a cor do livro:",
   "entry.bebooks.book_coloring_settings.curse_color_override_others": "Cor da maldição sobrepõe cores restantes",
+  "entry.bebooks.book_coloring_settings.color_saving_mode": "Como guardar cores no ficheiro:",
   "subcategory.bebooks.book_coloring_settings.enchantment_color": "Cores dos encantamentos",
-  "entry.bebooks.tooltip_settings.show_enchantment_max_level": "Mostrar o nível máximo do encantamento",
+  "entry.bebooks.tooltip_settings.show_enchantment_max_level": "Mostrar o nível máximo do encantamento em livros",
+  "entry.bebooks.tooltip_settings.show_enchantment_max_level_enchanting_table": "Mostrar o nível máximo do encantamento na mesa de encantamentos:",
+  "entry.bebooks.tooltip_settings.show_enchantment_max_level_all_items": "Mostrar o nível máximo do encantamento (excepto livros):",
   "entry.bebooks.tooltip_settings.tooltip_mode": "Modo de demonstração de itens aplicavéis do encantamento",
   "enum.bebooks.sorting_settings.alphabetically": "§aAlfabeticamente",
   "enum.bebooks.sorting_settings.custom": "§aOrdem personalizada",
   "enum.bebooks.sorting_settings.disabled": "§cDesativado",
   "enum.bebooks.tooltip_settings.enabled": "§aSempre",
   "enum.bebooks.tooltip_settings.on_shift": "§aShift",
-  "enum.bebooks.tooltip_settings.disabled": "§cNunca"
+  "enum.bebooks.tooltip_settings.disabled": "§cNunca",
+  "enum.bebooks.color_saving_settings.hexadecimal": "#RRGGBB",
+  "enum.bebooks.color_saving_settings.rgb_values": "rgb(R,G,B)",
+  "enum.bebooks.color_saving_settings.integer": "Número inteiro (legacy)"
 }
