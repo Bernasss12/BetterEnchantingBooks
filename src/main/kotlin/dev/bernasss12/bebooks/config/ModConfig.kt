@@ -14,8 +14,10 @@ import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SORTING_MODE
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_TOOLTIP_MODE
 import dev.bernasss12.bebooks.config.SavedConfigManager.CONFIG_DIR
 import dev.bernasss12.bebooks.config.model.*
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.enchantment.Enchantment
+import net.minecraft.registry.RegistryKeys
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.registry.entry.RegistryEntryList
 import java.awt.Color
@@ -187,7 +189,7 @@ object ModConfig {
             .sortToEnchantmentSet(sortingMode)
             .sortCurses(if (keepCursesBelow) CurseMode.BELOW else CurseMode.IGNORE)
             .toEnchantmentSet()
-            .map { it.registryEntry }
+            .mapNotNull { MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.getEntry(it) }
             .toRegistryList()
     }
 

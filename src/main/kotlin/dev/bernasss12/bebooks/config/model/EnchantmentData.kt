@@ -10,9 +10,12 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.resource.language.I18n
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.registry.Registries
+import net.minecraft.registry.RegistryKeys
+import net.minecraft.registry.tag.EnchantmentTags.CURSE
 import net.minecraft.util.Identifier
 import java.awt.Color
 
@@ -25,17 +28,15 @@ data class EnchantmentData(
     var color: Color? = null
 ) {
     val enchantment: Enchantment? by lazy {
-        Registries.ENCHANTMENT[identifier]
+        MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.get(identifier)
     }
 
     val translated: String by lazy {
-        enchantment?.translationKey?.let { key ->
-            I18n.translate(key)
-        } ?: identifier.toString()
+        MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.getEntry(enchantment)?.value()?.description.toString()
     }
 
     val curse: Boolean
-        get() = enchantment?.isCursed ?: false
+        get() = MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.getEntry(enchantment)?.isIn(CURSE) ?: false
 
 //    companion object {
 //        @JvmStatic

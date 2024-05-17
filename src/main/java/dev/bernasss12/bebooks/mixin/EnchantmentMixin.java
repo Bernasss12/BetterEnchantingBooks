@@ -20,11 +20,11 @@ public abstract class EnchantmentMixin {
     @Shadow
     public abstract int getMaxLevel();
 
-    @Inject(
-            at = @At(value = "TAIL"),
-            method = "getName(I)Lnet/minecraft/text/Text;"
-    )
-    private void appendMaxEnchantmentLevel(int level, CallbackInfoReturnable<Text> info, @Local MutableText enchantmentName) {
-        Util.appendMaxEnchantmentLevel(level, this.getMaxLevel(), enchantmentName);
-    }
+//    @Inject(
+//            at = @At(value = "TAIL"),
+//            method = "getName(I)Lnet/minecraft/text/Text;"
+//    )
+//    private void appendMaxEnchantmentLevel(int level, CallbackInfoReturnable<Text> info, @Local MutableText enchantmentName) {
+//        Util.appendMaxEnchantmentLevel(level, this.getMaxLevel(), enchantmentName);
+//    }
 }

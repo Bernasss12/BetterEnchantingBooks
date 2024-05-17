@@ -8,6 +8,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
 import net.minecraft.registry.Registries
+import net.minecraft.registry.RegistryKeys
 import net.minecraft.util.Identifier
 import java.awt.Color
 import java.io.IOException
@@ -132,7 +133,7 @@ object SavedConfigManager {
      */
     fun getApplicableItems(identifier: Identifier): Set<ItemStack> {
         return applicableIconsCache.computeIfAbsent(identifier) {
-            Registries.ENCHANTMENT.get(identifier)?.let { enchantment ->
+            MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.get(identifier)?.let { enchantment ->
                 (current.icons.ifEmpty { null } ?: getDefaultApplicableItems()).filter {
                     enchantment.isAcceptableItem(it)
                 }.toSet()
@@ -175,9 +176,9 @@ object SavedConfigManager {
             unmanagedEnchantmentData.addAll(
                 let {
                     val managed = getAllEnchantmentData().mapNotNull { it.identifier }
-                    Registries.ENCHANTMENT.keys.map { it.value }.filterNot { it in managed }.map { identifier ->
+                    MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.keys?.map { it.value }?.filterNot { it in managed }?.map { identifier ->
                         EnchantmentData(identifier)
-                    }
+                    } ?: emptySet()
                 }
             )
 

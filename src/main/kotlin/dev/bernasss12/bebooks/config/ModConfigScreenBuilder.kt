@@ -29,8 +29,10 @@ import dev.bernasss12.bebooks.config.model.TooltipMode
 import dev.bernasss12.bebooks.util.Util.noAlpha
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry
 import me.shedaniel.clothconfig2.api.ConfigBuilder
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.registry.Registries
+import net.minecraft.registry.RegistryKeys
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import java.awt.Color
@@ -98,7 +100,7 @@ object ModConfigScreenBuilder {
             )
 
             val entries = ArrayList<AbstractConfigListEntry<*>>()
-            val enchantments = Registries.ENCHANTMENT.keys.mapNotNull { SavedConfigManager.getEnchantmentData(it.value) }
+            val enchantments = MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.keys?.mapNotNull { SavedConfigManager.getEnchantmentData(it.value) }?: emptyList()
             for (enchantment in enchantments) {
                 if (enchantment.enchantment == null) continue  // not registered
                 entries.add(
