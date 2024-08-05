@@ -7,7 +7,6 @@ import dev.bernasss12.bebooks.config.model.EnchantmentData
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
-import net.minecraft.registry.Registries
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.util.Identifier
 import java.awt.Color
@@ -29,7 +28,7 @@ object SavedConfigManager {
 
     // Default enchantment configurations shipped with mod
     private val original: SavedConfigs by lazy {
-        resourceManager.getResource(Identifier(NAMESPACE, DEFAULT_CONFIG_FILE))
+        resourceManager.getResource(Identifier.of(NAMESPACE, DEFAULT_CONFIG_FILE))
             .getOrNull()?.let { resource ->
                 try {
                     LOGGER.info("Reading default enchantment configs.")
@@ -175,7 +174,7 @@ object SavedConfigManager {
             unmanagedEnchantmentData.clear() // TODO finish up unmanaged data!
             unmanagedEnchantmentData.addAll(
                 let {
-                    val managed = getAllEnchantmentData().mapNotNull { it.identifier }
+                    val managed = getAllEnchantmentData().map { it.identifier }
                     MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.keys?.map { it.value }?.filterNot { it in managed }?.map { identifier ->
                         EnchantmentData(identifier)
                     } ?: emptySet()

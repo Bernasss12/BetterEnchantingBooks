@@ -31,7 +31,6 @@ import me.shedaniel.clothconfig2.api.AbstractConfigListEntry
 import me.shedaniel.clothconfig2.api.ConfigBuilder
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.registry.Registries
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
@@ -39,7 +38,7 @@ import java.awt.Color
 
 object ModConfigScreenBuilder {
     fun getConfigScreen(): Screen = ConfigBuilder.create().apply {
-        defaultBackgroundTexture = Identifier("minecraft:textures/block/spruce_planks.png")
+        defaultBackgroundTexture = Identifier.of("minecraft:textures/block/spruce_planks.png")
         setGlobalized(true) // Creating categories
         val entryBuilder = entryBuilder()
 

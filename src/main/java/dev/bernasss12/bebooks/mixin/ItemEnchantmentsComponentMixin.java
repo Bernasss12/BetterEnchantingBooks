@@ -2,7 +2,7 @@ package dev.bernasss12.bebooks.mixin;
 
 import java.util.function.Consumer;
 
-import net.minecraft.client.item.TooltipType;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
