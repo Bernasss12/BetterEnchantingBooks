@@ -11,12 +11,13 @@ group = property("maven_group") as String
 val javaVersion = (property("java_version") as String).toInt()
 
 base {
-    archivesName = "${property("archives_base_name")}-${property("archives_base_name")}"
+    archivesName = "${property("archives_base_name")}-${property("archives_minecraft_version")}"
 }
 
 repositories {
-    maven { url = uri("https://maven.shedaniel.me/") }
-    maven { url = uri("https://maven.terraformersmc.com/") }
+    maven("https://maven.shedaniel.me/")
+    maven("https://maven.terraformersmc.com/")
+    maven("https://maven.nucleoid.xyz/")
 }
 
 dependencies {
