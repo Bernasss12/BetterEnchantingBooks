@@ -37,6 +37,13 @@ dependencies {
     modImplementation(group = "net.fabricmc", name = "fabric-language-kotlin", version = "${property("fabric_kotlin_version")}")
 }
 
+loom {
+    runConfigs.all {
+        ideConfigGenerated(true)
+        runDir = "../../run"
+    }
+}
+
 tasks.getByName<ProcessResources>("processResources") {
     val toExpand: MutableMap<String, String> = mutableMapOf(
         "version" to project.version.toString()

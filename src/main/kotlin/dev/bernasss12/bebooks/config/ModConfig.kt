@@ -13,6 +13,7 @@ import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SHOW_ENCHANTMENT
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_SORTING_MODE
 import dev.bernasss12.bebooks.config.ModConfig.Defaults.DEFAULT_TOOLTIP_MODE
 import dev.bernasss12.bebooks.config.SavedConfigManager.CONFIG_DIR
+import dev.bernasss12.bebooks.api.config.model.*
 import dev.bernasss12.bebooks.config.model.*
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen

@@ -99,7 +99,11 @@ object ModConfigScreenBuilder {
             )
 
             val entries = ArrayList<AbstractConfigListEntry<*>>()
-            val enchantments = MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.keys?.mapNotNull { SavedConfigManager.getEnchantmentData(it.value) }?: emptyList()
+            val enchantments = MinecraftClient.getInstance().world?.registryManager?.get(RegistryKeys.ENCHANTMENT)?.keys?.mapNotNull {
+                SavedConfigManager.getEnchantmentData(
+                    it.value
+                )
+            }?: emptyList()
             for (enchantment in enchantments) {
                 if (enchantment.enchantment == null) continue  // not registered
                 entries.add(
