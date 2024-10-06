@@ -12,7 +12,7 @@ object BookColorManager {
     val itemColorProvider = ItemColorProvider { stack: ItemStack?, tintIndex: Int ->
         if (tintIndex != 1) return@ItemColorProvider Color.WHITE.rgb
 
-        if (stack == null) return@ItemColorProvider DEFAULT_BOOK_STRIP_COLOR.rgb
+        if (stack == null || !ModConfig.colorBooks) return@ItemColorProvider DEFAULT_BOOK_STRIP_COLOR.rgb
 
         return@ItemColorProvider cache.computeIfAbsent(stack) {
             stack.getStoredEnchantments()?.let {
